@@ -11,7 +11,7 @@ void main() {
   });
 
   test('schema version matches currentSchemaVersion', () {
-    expect(currentSchemaVersion, 6);
+    expect(currentSchemaVersion, 7);
   });
 
   test('onCreate creates all tables', () async {

@@ -437,6 +437,7 @@ class ActiveWorkoutService extends ChangeNotifier {
     ExerciseSettingsRepository? settingsRepo,
     WorkoutSetRepository? setRepo,
     OverloadRecommendationRepository? recRepo,
+    ExerciseRepository? exerciseRepo,
   }) async {
     if (_currentSession == null || _isFinishing) return null;
     _lastError = null;
@@ -461,6 +462,13 @@ class ActiveWorkoutService extends ChangeNotifier {
           setRepo: setRepo,
           recRepo: recRepo,
         );
+      }
+
+      if (exerciseRepo != null) {
+        final usedIds = finishedSets.map((s) => s.exerciseId).toSet();
+        for (final id in usedIds) {
+          await exerciseRepo.updateLastUsed(id);
+        }
       }
 
       final completed = _currentSession!.copyWith(completedAt: now);

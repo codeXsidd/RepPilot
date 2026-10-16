@@ -20,6 +20,7 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
   final Set<String> _selectedIds = {};
   String _searchQuery = '';
   String? _selectedCategory;
+  String? _specialFilter;
   bool _loading = true;
   final _searchController = TextEditingController();
 
@@ -37,20 +38,17 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
 
   Future<void> _loadExercises() async {
     final repo = context.read<ExerciseRepository>();
-
     List<Exercise> exercises;
-    if (_searchQuery.isNotEmpty) {
-      exercises = await repo.search(_searchQuery);
-    } else if (_selectedCategory != null) {
-      exercises = await repo.getByCategory(_selectedCategory!);
-    } else {
-      exercises = await repo.getAll();
-    }
 
-    if (_searchQuery.isNotEmpty && _selectedCategory != null) {
-      exercises = exercises
-          .where((e) => e.category == _selectedCategory)
-          .toList();
+    if (_specialFilter == 'recent') {
+      exercises = await repo.getRecentlyUsed(limit: 30);
+    } else if (_specialFilter == 'favorites') {
+      exercises = await repo.getFavorites();
+    } else {
+      exercises = await repo.getFiltered(
+        category: _selectedCategory,
+        searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
+      );
     }
 
     exercises = exercises
@@ -66,11 +64,28 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
 
   void _onSearchChanged(String query) {
     _searchQuery = query;
+    if (query.isNotEmpty) {
+      _specialFilter = null;
+      _selectedCategory = null;
+    }
     _loadExercises();
   }
 
   void _onCategorySelected(String? category) {
-    setState(() => _selectedCategory = category);
+    setState(() {
+      _selectedCategory = category;
+      _specialFilter = null;
+    });
+    _loadExercises();
+  }
+
+  void _onSpecialFilterSelected(String filter) {
+    setState(() {
+      _specialFilter = _specialFilter == filter ? null : filter;
+      _selectedCategory = null;
+      _searchQuery = '';
+      _searchController.clear();
+    });
     _loadExercises();
   }
 
@@ -142,20 +157,81 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          _CategoryChips(
-            categories: exerciseCategories,
-            selected: _selectedCategory,
-            onSelected: _onCategorySelected,
+          SizedBox(
+            height: 40,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: FilterChip(
+                    avatar: const Icon(Icons.history, size: 16),
+                    label: const Text('Recent'),
+                    selected: _specialFilter == 'recent',
+                    onSelected: (_) => _onSpecialFilterSelected('recent'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: FilterChip(
+                    avatar: const Icon(Icons.star, size: 16),
+                    label: const Text('Favorites'),
+                    selected: _specialFilter == 'favorites',
+                    onSelected: (_) => _onSpecialFilterSelected('favorites'),
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 24,
+                  margin: const EdgeInsets.only(right: 8),
+                  color: theme.colorScheme.outlineVariant,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: FilterChip(
+                    label: const Text('All'),
+                    selected:
+                        _selectedCategory == null && _specialFilter == null,
+                    onSelected: (_) => _onCategorySelected(null),
+                  ),
+                ),
+                ...exerciseCategories.map(
+                  (cat) => Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: FilterChip(
+                      label: Text(_formatLabel(cat)),
+                      selected: _selectedCategory == cat,
+                      onSelected: (_) => _onCategorySelected(
+                        _selectedCategory == cat ? null : cat,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 8),
           Expanded(
             child: _loading
                 ? const Center(child: CircularProgressIndicator())
                 : _exercises.isEmpty
-                ? const EmptyState(
-                    icon: Icons.search_off,
-                    title: 'No Exercises Found',
-                    description: 'Try a different search or category filter.',
+                ? EmptyState(
+                    icon: _specialFilter == 'recent'
+                        ? Icons.history
+                        : _specialFilter == 'favorites'
+                        ? Icons.star_border
+                        : Icons.search_off,
+                    title: _specialFilter == 'recent'
+                        ? 'No Recent Exercises'
+                        : _specialFilter == 'favorites'
+                        ? 'No Favorites Yet'
+                        : 'No Exercises Found',
+                    description: _specialFilter == 'recent'
+                        ? 'Complete a workout to see exercises here.'
+                        : _specialFilter == 'favorites'
+                        ? 'Star exercises to find them quickly.'
+                        : 'Try a different search or category filter.',
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -177,9 +253,11 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
                           ),
                           subtitle: Text(
                             [
-                              _capitalize(exercise.category),
+                              _formatLabel(exercise.category),
                               if (exercise.muscleGroup.isNotEmpty)
                                 exercise.muscleGroup,
+                              if (exercise.difficulty.isNotEmpty)
+                                _formatLabel(exercise.difficulty),
                             ].join(' • '),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
@@ -196,52 +274,12 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
     );
   }
 
-  static String _capitalize(String s) =>
-      s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
-}
-
-class _CategoryChips extends StatelessWidget {
-  final List<String> categories;
-  final String? selected;
-  final ValueChanged<String?> onSelected;
-
-  const _CategoryChips({
-    required this.categories,
-    required this.selected,
-    required this.onSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: FilterChip(
-              label: const Text('All'),
-              selected: selected == null,
-              onSelected: (_) => onSelected(null),
-            ),
-          ),
-          ...categories.map(
-            (cat) => Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: FilterChip(
-                label: Text(_capitalize(cat)),
-                selected: selected == cat,
-                onSelected: (_) => onSelected(selected == cat ? null : cat),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  static String _formatLabel(String s) {
+    if (s.isEmpty) return s;
+    return s
+        .replaceAll('_', ' ')
+        .split(' ')
+        .map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}')
+        .join(' ');
   }
-
-  static String _capitalize(String s) =>
-      s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
 }

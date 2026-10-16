@@ -5,6 +5,7 @@ import '../../core/constants.dart';
 import '../../core/data/default_exercises.dart';
 import '../../models/exercise.dart';
 import '../../repositories/exercise_repository.dart';
+import 'exercise_detail_screen.dart';
 import 'exercise_settings_screen.dart';
 
 class ExerciseFormScreen extends StatefulWidget {
@@ -40,6 +41,18 @@ class _ExerciseFormScreenState extends State<ExerciseFormScreen> {
     );
     _category = widget.exercise?.category ?? exerciseCategories.first;
     _equipment = widget.exercise?.equipment ?? equipmentTypes.first;
+
+    if (_readOnly) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ExerciseDetailScreen(exercise: widget.exercise!),
+          ),
+        );
+      });
+    }
   }
 
   @override

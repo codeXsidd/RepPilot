@@ -7,7 +7,7 @@ RepPilot is a free, offline-first Android fitness app. No accounts, no subscript
 ## Features
 
 - **Workout Management** — Create custom routines, assign exercises, schedule across the week
-- **Exercise Library** — 58 built-in exercises plus unlimited custom exercises with equipment and muscle-group tags
+- **Exercise Library** — 152 built-in exercises across 10 categories with full metadata (difficulty, instructions, safety notes, secondary muscles, substitutions) plus unlimited custom exercises
 - **Live Workout Recording** — Set-by-set logging with rest timers; recovers if the app closes mid-workout
 - **Progressive Overload** — Rule-based suggestions that explain *why* they recommend increasing weight or reps
 - **Body Weight Tracking** — Daily weigh-ins with history charts
@@ -46,7 +46,7 @@ flutter run --release
 ## Testing
 
 ```bash
-# Run all tests (602 tests)
+# Run all tests (642 tests)
 flutter test
 
 # Run with verbose output
@@ -84,7 +84,7 @@ lib/
   main.dart                  # App entry point
   app.dart                   # MaterialApp configuration
   core/
-    database/                # Database helper, migrations, schema (v6, 16 tables)
+    database/                # Database helper, migrations, schema (v7, 16 tables)
     theme/                   # Dark/light/system themes
     constants.dart           # App-wide constants
     utils.dart               # Shared utilities
@@ -107,7 +107,7 @@ lib/
 | Layer | Technology |
 |---|---|
 | State management | Provider + ChangeNotifier |
-| Local storage | sqflite (SQLite) — 16 tables, schema v6 |
+| Local storage | sqflite (SQLite) — 16 tables, schema v7 |
 | Settings | shared_preferences |
 | Charts | fl_chart |
 | File I/O | file_picker 13.x |

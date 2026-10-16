@@ -1,4 +1,4 @@
-const int currentSchemaVersion = 6;
+const int currentSchemaVersion = 7;
 
 const List<String> v1Tables = [
   '''
@@ -271,4 +271,34 @@ const List<String> v6Indexes = [
   'CREATE INDEX IF NOT EXISTS idx_foods_is_favorite ON foods(is_favorite)',
   'CREATE INDEX IF NOT EXISTS idx_meal_template_items_template_id ON meal_template_items(template_id)',
   'CREATE INDEX IF NOT EXISTS idx_meal_template_items_food_id ON meal_template_items(food_id)',
+];
+
+const List<String> v6ToV7Migration = [
+  "ALTER TABLE exercises ADD COLUMN secondary_muscles TEXT NOT NULL DEFAULT ''",
+  "ALTER TABLE exercises ADD COLUMN difficulty TEXT NOT NULL DEFAULT 'intermediate'",
+  "ALTER TABLE exercises ADD COLUMN description TEXT NOT NULL DEFAULT ''",
+  "ALTER TABLE exercises ADD COLUMN instructions TEXT NOT NULL DEFAULT ''",
+  "ALTER TABLE exercises ADD COLUMN movement_pattern TEXT NOT NULL DEFAULT ''",
+  'ALTER TABLE exercises ADD COLUMN default_sets INTEGER NOT NULL DEFAULT 3',
+  'ALTER TABLE exercises ADD COLUMN default_reps_min INTEGER NOT NULL DEFAULT 8',
+  'ALTER TABLE exercises ADD COLUMN default_reps_max INTEGER NOT NULL DEFAULT 12',
+  'ALTER TABLE exercises ADD COLUMN default_rest_seconds INTEGER NOT NULL DEFAULT 60',
+  'ALTER TABLE exercises ADD COLUMN default_increment_kg REAL NOT NULL DEFAULT 2.5',
+  "ALTER TABLE exercises ADD COLUMN aliases TEXT NOT NULL DEFAULT ''",
+  "ALTER TABLE exercises ADD COLUMN substitution_ids TEXT NOT NULL DEFAULT ''",
+  'ALTER TABLE exercises ADD COLUMN is_bodyweight INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE exercises ADD COLUMN is_unilateral INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE exercises ADD COLUMN is_machine INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE exercises ADD COLUMN suitable_for_home INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE exercises ADD COLUMN suitable_for_gym INTEGER NOT NULL DEFAULT 1',
+  'ALTER TABLE exercises ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE exercises ADD COLUMN last_used_at TEXT',
+  "ALTER TABLE exercises ADD COLUMN safety_notes TEXT NOT NULL DEFAULT ''",
+];
+
+const List<String> v7Indexes = [
+  'CREATE INDEX IF NOT EXISTS idx_exercises_difficulty ON exercises(difficulty)',
+  'CREATE INDEX IF NOT EXISTS idx_exercises_is_favorite ON exercises(is_favorite)',
+  'CREATE INDEX IF NOT EXISTS idx_exercises_last_used_at ON exercises(last_used_at)',
+  'CREATE INDEX IF NOT EXISTS idx_exercises_movement_pattern ON exercises(movement_pattern)',
 ];

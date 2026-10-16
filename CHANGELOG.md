@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.1.0 (2026-10-16)
+
+### Exercise Library Expansion
+- **152 built-in exercises** across 10 categories (up from 58 across 6)
+- New categories: biceps, triceps, glutes, calves, full_body (split from arms/legs)
+- Full metadata per exercise: difficulty, instructions, safety notes, secondary muscles, movement pattern, default programming, aliases, substitutions, home/gym suitability
+- Exercise detail screen with instructions, safety notes, target muscles, and default programming
+- Filter by difficulty (beginner/intermediate/advanced), equipment, home suitability
+- Favorites system with star toggle on detail screen
+- Recently used exercises tracked when completing workouts
+- Exercise picker now has quick-access Recent and Favorites tabs
+- Search now matches aliases and secondary muscles
+- Database schema v7 with 20 new columns and 4 new indexes
+- Idempotent catalog seeding: updates metadata on re-seed, preserves user favorites and last-used timestamps
+- 40 new tests for catalog validation, model serialization, repository methods, and seeding
+
+### Technical
+- Database migration v6 to v7 (forward-only, additive)
+- Exercise model expanded from 10 to 30 fields
+- ExerciseRepository: 10 new query methods (getFiltered, getFavorites, getRecentlyUsed, toggleFavorite, etc.)
+- 642 total automated tests (all passing)
+
 ## v1.0.0 (2026-10-16)
 
 ### Features

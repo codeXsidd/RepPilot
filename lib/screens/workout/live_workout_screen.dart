@@ -148,6 +148,7 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
       settingsRepo: context.read<ExerciseSettingsRepository>(),
       setRepo: context.read<WorkoutSetRepository>(),
       recRepo: context.read<OverloadRecommendationRepository>(),
+      exerciseRepo: context.read<ExerciseRepository>(),
     );
 
     if (completed != null && mounted) {

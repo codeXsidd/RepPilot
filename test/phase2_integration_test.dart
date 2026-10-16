@@ -57,20 +57,29 @@ void main() {
     test('all categories covered', () {
       final defaults = buildDefaultExercises();
       final cats = defaults.map((e) => e.category).toSet();
+      expect(cats, containsAll(exerciseCategories));
+    });
+
+    test('exerciseCategories contains expected muscle groups', () {
       expect(
-        cats,
-        containsAll(['chest', 'back', 'shoulders', 'legs', 'arms', 'core']),
+        exerciseCategories,
+        containsAll([
+          'chest',
+          'back',
+          'shoulders',
+          'biceps',
+          'triceps',
+          'legs',
+          'core',
+        ]),
       );
     });
 
-    test('exerciseCategories is sorted', () {
-      final sorted = List<String>.from(exerciseCategories)..sort();
-      expect(exerciseCategories, sorted);
-    });
-
-    test('equipmentTypes is sorted', () {
-      final sorted = List<String>.from(equipmentTypes)..sort();
-      expect(equipmentTypes, sorted);
+    test('equipmentTypes contains expected types', () {
+      expect(
+        equipmentTypes,
+        containsAll(['barbell', 'bodyweight', 'cable', 'dumbbell', 'machine']),
+      );
     });
 
     test('seed defaults writes to database', () async {

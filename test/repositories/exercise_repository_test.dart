@@ -198,18 +198,20 @@ void main() {
       expect(all.every((e) => !e.isCustom), true);
     });
 
-    test('does not re-seed if defaults already exist', () async {
+    test('re-seed upserts new exercises and updates existing', () async {
       final defaults = [
         makeExercise(id: 'd-1', name: 'Default A', isCustom: false),
       ];
       await repo.seedDefaults(defaults);
       await repo.seedDefaults([
+        makeExercise(id: 'd-1', name: 'Default A Updated', isCustom: false),
         makeExercise(id: 'd-2', name: 'Default B', isCustom: false),
       ]);
 
       final all = await repo.getAll();
-      expect(all.length, 1);
-      expect(all.first.name, 'Default A');
+      expect(all.length, 2);
+      expect(all.any((e) => e.name == 'Default A Updated'), true);
+      expect(all.any((e) => e.name == 'Default B'), true);
     });
 
     test('hasDefaultExercises returns false on fresh DB', () async {

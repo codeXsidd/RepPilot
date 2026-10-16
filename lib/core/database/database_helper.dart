@@ -116,6 +116,14 @@ class DatabaseHelper {
         await db.execute(sql);
       }
     }
+    if (from < 7 && to >= 7) {
+      for (final sql in v6ToV7Migration) {
+        await db.execute(sql);
+      }
+      for (final sql in v7Indexes) {
+        await db.execute(sql);
+      }
+    }
   }
 
   static Future<void> createAllTables(Database db) async {
