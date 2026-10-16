@@ -7,6 +7,7 @@ import '../../repositories/exercise_repository.dart';
 import '../../widgets/empty_state.dart';
 import 'exercise_detail_screen.dart';
 import 'exercise_form_screen.dart';
+import 'muscle_group_explorer_screen.dart';
 
 class ExerciseListScreen extends StatefulWidget {
   const ExerciseListScreen({super.key});
@@ -126,6 +127,16 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
       appBar: AppBar(
         title: const Text('Exercise Library'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.accessibility_new),
+            tooltip: 'Muscle Groups',
+            onPressed: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const MuscleGroupExplorerScreen(),
+              ),
+            ),
+          ),
           Badge(
             isLabelVisible: _activeFilterCount > 0,
             label: Text('$_activeFilterCount'),

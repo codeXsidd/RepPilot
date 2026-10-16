@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Figure in a stretching/lunge pose -->
+  <!-- Head -->
+  <circle cx="90" cy="38" r="14" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Neck -->
+  <path d="M88,52 L92,52 L94,60 L86,60 Z" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Torso (leaning forward slightly) -->
+  <path d="M70,62 L110,62 L115,75 L112,110 L68,110 L65,75 Z" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Left Arm (reaching up) -->
+  <path d="M68,64 L50,50 L38,30 L32,28 Q28,26 30,22 L36,18 Q40,16 42,20 L52,38 L66,56" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Arm highlight for stretch -->
+  <path d="M38,30 L50,50" stroke="#4CAF50" stroke-width="3" opacity="0.6"/>
+  <!-- Right Arm (reaching down) -->
+  <path d="M112,64 L125,78 L135,95 L140,100" fill="none" stroke="#333" stroke-width="2"/>
+  <path d="M108,62 L120,72 L132,90 L138,98" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Hip area -->
+  <path d="M68,110 L112,110 L115,120 L65,120 Z" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Left Leg (forward lunge) -->
+  <path d="M70,118 L50,140 L40,165 L38,180 L55,182 L58,168 L68,145 L80,120" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Left leg stretch highlight -->
+  <path d="M50,140 L40,165" stroke="#4CAF50" stroke-width="4" opacity="0.5"/>
+  <!-- Right Leg (extended back) -->
+  <path d="M100,118 L120,135 L145,155 L165,168 L168,180 L155,184 L148,172 L130,155 L108,135" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Right leg stretch highlight -->
+  <path d="M120,135 L145,155 L165,168" stroke="#4CAF50" stroke-width="4" opacity="0.5"/>
+  <!-- Motion arc lines -->
+  <path d="M30,15 Q22,22 28,32" fill="none" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <path d="M24,18 Q16,25 22,35" fill="none" stroke="#4CAF50" stroke-width="1" stroke-dasharray="3,3"/>
+  <!-- Ground line -->
+  <line x1="20" y1="188" x2="180" y2="188" stroke="#333" stroke-width="1.5" opacity="0.3"/>
+</svg>

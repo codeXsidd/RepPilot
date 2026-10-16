@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Hip / glute area (back view) -->
+  <path d="M50,10 L50,30 Q50,45 65,48 L100,50 L135,48 Q150,45 150,30 L150,10 Z" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Left Hamstring (highlighted) -->
+  <path d="M55,45 L50,60 L46,100 Q44,120 46,140 L48,160 Q50,168 58,170 L78,172 Q86,170 88,164 L92,140 Q94,120 92,100 L90,60 L85,45 Z" fill="#4CAF50" stroke="#333" stroke-width="2"/>
+  <!-- Left hamstring detail - muscle bellies -->
+  <path d="M60,55 Q56,85 56,120 Q56,145 60,160" stroke="#333" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M72,50 L72,165" stroke="#333" stroke-width="1" fill="none" opacity="0.35"/>
+  <path d="M80,55 Q82,85 82,120 Q82,145 80,160" stroke="#333" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Right Hamstring (highlighted) -->
+  <path d="M108,45 L105,60 L102,100 Q100,120 102,140 L104,160 Q106,168 114,170 L134,172 Q142,170 144,164 L148,140 Q150,120 148,100 L146,60 L142,45 Z" fill="#4CAF50" stroke="#333" stroke-width="2"/>
+  <!-- Right hamstring detail -->
+  <path d="M116,55 Q112,85 112,120 Q112,145 116,160" stroke="#333" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M126,50 L126,165" stroke="#333" stroke-width="1" fill="none" opacity="0.35"/>
+  <path d="M136,55 Q138,85 138,120 Q138,145 136,160" stroke="#333" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Left Knee -->
+  <ellipse cx="68" cy="172" rx="14" ry="6" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Right Knee -->
+  <ellipse cx="128" cy="172" rx="14" ry="6" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Left Lower Leg -->
+  <path d="M56,176 L54,198 L82,198 L80,176" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Right Lower Leg -->
+  <path d="M116,176 L114,198 L142,198 L140,176" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+</svg>

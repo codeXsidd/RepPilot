@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Band loop shape -->
+  <ellipse cx="24" cy="24" rx="18" ry="12" fill="none" stroke="#4CAF50" stroke-width="3"/>
+  <!-- Band thickness / doubled effect -->
+  <ellipse cx="24" cy="24" rx="14" ry="8" fill="none" stroke="#4CAF50" stroke-width="2" opacity="0.5"/>
+  <!-- Left grip handle -->
+  <rect x="2" y="20" width="6" height="8" rx="2" fill="#4CAF50"/>
+  <!-- Right grip handle -->
+  <rect x="40" y="20" width="6" height="8" rx="2" fill="#4CAF50"/>
+  <!-- Stretch indication lines -->
+  <line x1="8" y1="22" x2="12" y2="20" stroke="#4CAF50" stroke-width="1.5" opacity="0.6"/>
+  <line x1="8" y1="26" x2="12" y2="28" stroke="#4CAF50" stroke-width="1.5" opacity="0.6"/>
+  <line x1="40" y1="22" x2="36" y2="20" stroke="#4CAF50" stroke-width="1.5" opacity="0.6"/>
+  <line x1="40" y1="26" x2="36" y2="28" stroke="#4CAF50" stroke-width="1.5" opacity="0.6"/>
+</svg>

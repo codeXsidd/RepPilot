@@ -12,6 +12,8 @@ const List<String> exerciseCategories = [
   'calves',
   'core',
   'full_body',
+  'forearms',
+  'mobility',
 ];
 
 const List<String> equipmentTypes = [

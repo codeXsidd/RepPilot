@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Head -->
+  <circle cx="100" cy="30" r="18" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Neck -->
+  <rect x="92" y="48" width="16" height="12" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Torso -->
+  <path d="M60,60 Q60,55 70,58 L92,60 L108,60 L130,58 Q140,55 140,60 L145,100 L140,150 L120,155 L100,158 L80,155 L60,150 Z" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Left Lat (highlighted) -->
+  <path d="M65,70 L62,100 L68,130 L80,140 L88,130 L90,100 L88,75 Z" fill="#4CAF50" stroke="#333" stroke-width="1.5"/>
+  <!-- Right Lat (highlighted) -->
+  <path d="M135,70 L138,100 L132,130 L120,140 L112,130 L110,100 L112,75 Z" fill="#4CAF50" stroke="#333" stroke-width="1.5"/>
+  <!-- Upper back / traps (highlighted) -->
+  <path d="M88,62 L100,58 L112,62 L115,80 L100,85 L85,80 Z" fill="#4CAF50" stroke="#333" stroke-width="1.5"/>
+  <!-- Spine line -->
+  <line x1="100" y1="60" x2="100" y2="150" stroke="#333" stroke-width="1.5" opacity="0.4"/>
+  <!-- Left Arm -->
+  <path d="M60,62 L45,70 L38,100 L42,130 L52,132 L58,105 L60,80" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Right Arm -->
+  <path d="M140,62 L155,70 L162,100 L158,130 L148,132 L142,105 L140,80" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Waist -->
+  <rect x="70" y="150" width="60" height="10" rx="3" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Left Leg -->
+  <path d="M75,160 L70,195 L85,195 L90,160" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Right Leg -->
+  <path d="M110,160 L115,195 L130,195 L125,160" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+</svg>

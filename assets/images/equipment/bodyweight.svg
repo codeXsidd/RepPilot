@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Head -->
+  <circle cx="24" cy="8" r="5" fill="#4CAF50"/>
+  <!-- Body / Torso -->
+  <path d="M20,13 L20,28 L28,28 L28,13 Z" fill="#4CAF50"/>
+  <!-- Left Arm (raised) -->
+  <path d="M20,14 L12,10 L10,8" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Right Arm (raised) -->
+  <path d="M28,14 L36,10 L38,8" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Left Leg -->
+  <path d="M21,28 L17,38 L14,45" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Right Leg -->
+  <path d="M27,28 L31,38 L34,45" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>

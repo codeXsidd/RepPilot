@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/exercise.dart';
 import '../../repositories/exercise_repository.dart';
+import '../progress/exercise_history_screen.dart';
 import 'exercise_settings_screen.dart';
 
 class ExerciseDetailScreen extends StatefulWidget {
@@ -199,8 +200,25 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             Text(_exercise.notes, style: theme.textTheme.bodyMedium),
           ],
 
+          const SizedBox(height: 24),
+          FilledButton.tonalIcon(
+            onPressed: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ExerciseHistoryScreen(
+                    exerciseId: _exercise.id,
+                    exerciseName: _exercise.name,
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(Icons.show_chart),
+            label: const Text('View History & Progression'),
+          ),
+
           if (!_exercise.isCustom) ...[
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             Text(
               'Built-in exercise',
               style: theme.textTheme.bodySmall?.copyWith(

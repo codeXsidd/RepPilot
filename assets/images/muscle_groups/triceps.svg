@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Upper arm outline (back view) -->
+  <path d="M55,20 Q45,18 40,25 L30,80 Q28,90 32,95 L40,130 Q42,138 50,140 L65,142 Q75,140 78,135 L82,95 Q85,88 82,80 L75,25 Q72,18 62,20 Z" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Tricep muscle (highlighted) - horseshoe shape -->
+  <path d="M46,40 Q40,55 38,75 Q36,90 40,100 L48,108 Q55,112 62,108 L68,100 Q72,90 70,75 Q68,55 63,40 Q58,35 46,40 Z" fill="#4CAF50" stroke="#333" stroke-width="1.5"/>
+  <!-- Tricep horseshoe detail -->
+  <path d="M54,45 L54,100" stroke="#333" stroke-width="1" opacity="0.4"/>
+  <path d="M46,70 Q54,62 62,70" stroke="#333" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Shoulder cap -->
+  <ellipse cx="58" cy="22" rx="18" ry="10" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Elbow joint -->
+  <ellipse cx="55" cy="138" rx="14" ry="8" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Forearm -->
+  <path d="M42,142 L35,185 Q34,192 40,195 L70,195 Q76,192 74,185 L68,142" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Mirror arm (smaller, background) -->
+  <path d="M120,30 Q115,28 112,32 L107,70 Q106,76 108,80 L112,105 Q113,110 118,112 L128,113 Q133,112 135,108 L138,80 Q140,74 138,68 L133,32 Q131,28 126,30 Z" fill="#E0E0E0" stroke="#333" stroke-width="1.5" opacity="0.5"/>
+  <!-- Mirror tricep (highlighted) -->
+  <path d="M116,40 Q112,50 111,62 Q110,72 112,80 L118,85 Q123,87 128,84 L131,78 Q133,70 132,58 Q131,48 128,40 Q124,37 116,40 Z" fill="#4CAF50" stroke="#333" stroke-width="1" opacity="0.5"/>
+</svg>

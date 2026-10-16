@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Handle -->
+  <rect x="14" y="22" width="20" height="4" rx="2" fill="#4CAF50"/>
+  <!-- Left weight block -->
+  <rect x="4" y="15" width="5" height="18" rx="1.5" fill="#4CAF50"/>
+  <rect x="10" y="17" width="4" height="14" rx="1" fill="#4CAF50"/>
+  <!-- Right weight block -->
+  <rect x="39" y="15" width="5" height="18" rx="1.5" fill="#4CAF50"/>
+  <rect x="34" y="17" width="4" height="14" rx="1" fill="#4CAF50"/>
+</svg>

@@ -18,6 +18,7 @@ import 'package:rep_pilot/widgets/section_header.dart';
 import '../weight/body_measurement_screen.dart';
 import '../weight/weight_chart.dart';
 import '../weight/weight_screen.dart';
+import 'workout_calendar_screen.dart';
 
 class ProgressDashboard extends StatefulWidget {
   const ProgressDashboard({super.key});
@@ -124,6 +125,16 @@ class _ProgressDashboardState extends State<ProgressDashboard>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Progress'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.calendar_month),
+            tooltip: 'Workout Calendar',
+            onPressed: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute(builder: (_) => const WorkoutCalendarScreen()),
+            ),
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,

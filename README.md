@@ -7,13 +7,17 @@ RepPilot is a free, offline-first Android fitness app. No accounts, no subscript
 ## Features
 
 - **Workout Management** — Create custom routines, assign exercises, schedule across the week
-- **Exercise Library** — 152 built-in exercises across 10 categories with full metadata (difficulty, instructions, safety notes, secondary muscles, substitutions) plus unlimited custom exercises
+- **Exercise Library** — 255 built-in exercises across 12 categories with full metadata, muscle group SVG illustrations, and progression charts plus unlimited custom exercises
 - **Live Workout Recording** — Set-by-set logging with rest timers; recovers if the app closes mid-workout
 - **Progressive Overload** — Rule-based suggestions that explain *why* they recommend increasing weight or reps
 - **Body Weight Tracking** — Daily weigh-ins with history charts
-- **Diet & Nutrition** — Log meals (calories, protein, carbs, fat), track water intake, search from 90+ common foods
+- **Diet & Nutrition** — Log meals (calories, protein, carbs, fat), track water intake, search from 109+ built-in foods (Indian and international)
 - **Motivation** — Daily messages, consistency streaks, and weekly performance reports
 - **Body Measurements** — Track waist, chest, arms, and hips over time
+- **Muscle Group Explorer** — Visual SVG anatomy illustrations for each muscle group with exercise browsing
+- **Exercise Progression** — Per-exercise weight, volume, and rep charts with personal records
+- **Workout Calendar** — Monthly calendar view highlighting training days with session details
+- **Training Levels** — Beginner, intermediate, and advanced modes with tailored defaults
 - **Units** — Display weights in kg or lb (configurable in Settings)
 - **Themes** — Dark, light, or follow system
 - **Onboarding** — Guided welcome flow for first-time users
@@ -46,7 +50,7 @@ flutter run --release
 ## Testing
 
 ```bash
-# Run all tests (642 tests)
+# Run all tests (642+ tests)
 flutter test
 
 # Run with verbose output

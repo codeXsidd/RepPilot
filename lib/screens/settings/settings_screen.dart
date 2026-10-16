@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/training_level_service.dart';
 import '../../theme/theme_controller.dart';
 import '../../widgets/section_header.dart';
 import 'backup_restore_screen.dart';
@@ -14,6 +15,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeCtrl = context.watch<ThemeController>();
+    final levelCtrl = context.watch<TrainingLevelService>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
@@ -44,6 +46,45 @@ class SettingsScreen extends StatelessWidget {
                   selected: themeCtrl.themeMode == ThemeMode.dark,
                   onTap: () => themeCtrl.setThemeMode(ThemeMode.dark),
                 ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          const SectionHeader(title: 'TRAINING EXPERIENCE'),
+          Card(
+            child: Column(
+              children: [
+                for (final level in TrainingLevel.values)
+                  Column(
+                    children: [
+                      if (level != TrainingLevel.values.first)
+                        const Divider(height: 1, indent: 56),
+                      ListTile(
+                        leading: Icon(
+                          switch (level) {
+                            TrainingLevel.beginner => Icons.eco,
+                            TrainingLevel.intermediate => Icons.fitness_center,
+                            TrainingLevel.advanced => Icons.bolt,
+                          },
+                          color: levelCtrl.level == level
+                              ? theme.colorScheme.primary
+                              : null,
+                        ),
+                        title: Text(level.label),
+                        subtitle: Text(
+                          level.description,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        trailing: levelCtrl.level == level
+                            ? Icon(
+                                Icons.check_circle,
+                                color: theme.colorScheme.primary,
+                              )
+                            : null,
+                        onTap: () => levelCtrl.setLevel(level),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),

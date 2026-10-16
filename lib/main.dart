@@ -9,6 +9,7 @@ import 'repositories/exercise_repository.dart';
 import 'repositories/food_repository.dart';
 import 'screens/onboarding/welcome_screen.dart';
 import 'services/reminder_service.dart';
+import 'services/training_level_service.dart';
 import 'theme/theme_controller.dart';
 
 void main() async {
@@ -26,6 +27,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final scheduler = NoOpNotificationScheduler();
   final reminderService = ReminderService(prefs, scheduler);
+  final trainingLevelService = TrainingLevelService.withPrefs(prefs);
 
   final showOnboarding = !await WelcomeScreen.isOnboardingComplete();
 
@@ -34,6 +36,7 @@ void main() async {
       database: database,
       themeController: themeController,
       reminderService: reminderService,
+      trainingLevelService: trainingLevelService,
       showOnboarding: showOnboarding,
     ),
   );

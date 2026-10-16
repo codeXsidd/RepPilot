@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Upper arm -->
+  <path d="M70,10 Q60,8 56,15 L48,55 Q46,62 50,68 L55,85 Q56,90 62,92 L78,94 Q84,92 86,88 L90,68 Q93,60 90,55 L84,15 Q82,8 74,10 Z" fill="#E0E0E0" stroke="#333" stroke-width="2"/>
+  <!-- Elbow joint -->
+  <ellipse cx="72" cy="92" rx="16" ry="8" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Forearm (highlighted) -->
+  <path d="M58,96 L48,155 Q46,165 50,170 L55,175 Q60,178 68,178 L78,178 Q86,178 90,175 L94,170 Q98,165 96,155 L86,96" fill="#4CAF50" stroke="#333" stroke-width="2"/>
+  <!-- Forearm muscle details -->
+  <path d="M64,100 Q60,120 58,145" stroke="#333" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M80,100 Q82,120 84,145" stroke="#333" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M72,100 L72,150" stroke="#333" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <!-- Wrist -->
+  <rect x="55" y="172" width="34" height="6" rx="3" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Hand -->
+  <path d="M58,178 L55,192 Q54,196 58,198 L86,198 Q90,196 89,192 L86,178" fill="#E0E0E0" stroke="#333" stroke-width="1.5"/>
+  <!-- Mirror forearm (smaller) -->
+  <path d="M120,60 L115,100 Q114,106 116,110 L118,112 Q122,115 128,115 L132,112 Q136,108 135,100 L130,60" fill="#4CAF50" stroke="#333" stroke-width="1.5" opacity="0.5"/>
+  <path d="M118,55 Q116,48 120,46 L130,46 Q134,48 132,55 L130,60 L120,60 Z" fill="#E0E0E0" stroke="#333" stroke-width="1.5" opacity="0.5"/>
+</svg>

@@ -1,5 +1,41 @@
 # Changelog
 
+## v1.2.0 (2026-10-16)
+
+### Exercise Library Expansion
+- **255 built-in exercises** across 12 categories (up from 152 across 10)
+- New categories: forearms, mobility/warm-up
+- New exercise groups: kettlebell (10), medicine ball (6), resistance band (8), additional bodyweight (10), cable (8), machine (8), barbell compound (10), dumbbell (8), core (12)
+- Muscle group explorer screen with SVG anatomy illustrations for each muscle group
+- Per-exercise weight history and progression charts (max weight, volume, reps over time)
+- Exercise detail screen now links to history/progression view
+
+### Visual Exercise Learning
+- 13 muscle group SVG illustrations (chest, back, shoulders, biceps, triceps, forearms, legs, hamstrings, glutes, calves, core, full body, mobility)
+- 8 equipment SVG illustrations (barbell, dumbbell, cable, bodyweight, machine, kettlebell, resistance band, EZ bar)
+- Muscle group explorer: tap a muscle group to see anatomy illustration and browse its exercises
+
+### Food & Nutrition Expansion
+- **109 built-in foods** (up from 29) covering Indian and international cuisine
+- New Indian foods: moong/toor/masoor/urad dal, biryani, curries, street food (bhel puri, pani puri, kachori), sweets (gulab jamun, rasgulla, jalebi, kheer), South Indian (uttapam, medu vada, pesarattu)
+- International foods: salmon, tuna, quinoa, Greek yogurt, oatmeal, avocado, pasta, dark chocolate, olive oil
+- New categories: main, dairy, fruit, sweet
+
+### Training Experience Levels
+- Beginner, intermediate, and advanced training modes in Settings
+- Each level provides tailored defaults for sets, rep ranges, and weight increments
+- Persisted via shared_preferences
+
+### Workout Calendar
+- Monthly calendar view showing training days with dot markers
+- Tap any day to see completed sessions with duration and set counts
+- Month navigation with workout count summary
+- Links to full session summary
+
+### Progress Enhancements
+- Calendar button on Progress screen for quick access to workout calendar
+- Exercise history accessible from exercise detail screen
+
 ## v1.1.0 (2026-10-16)
 
 ### Exercise Library Expansion

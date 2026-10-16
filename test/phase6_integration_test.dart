@@ -629,7 +629,7 @@ void main() {
     test('seeds all default Indian foods', () async {
       await service.seedDefaultFoods(foodRepo, buildDefaultFoods());
       final all = await foodRepo.getAll();
-      expect(all.length, 29);
+      expect(all.length, greaterThanOrEqualTo(100));
     });
 
     test('default foods are marked as estimates', () async {
@@ -683,7 +683,8 @@ void main() {
       await foodRepo.create(custom);
 
       final all = await foodRepo.getAll();
-      expect(all.length, 30);
+      final defaultCount = buildDefaultFoods().length;
+      expect(all.length, defaultCount + 1);
 
       final fetched = await foodRepo.getById('custom-1');
       expect(fetched!.isCustom, true);

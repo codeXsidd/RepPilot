@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Machine frame - vertical posts -->
+  <rect x="6" y="4" width="3" height="40" rx="1" fill="#4CAF50"/>
+  <rect x="39" y="4" width="3" height="40" rx="1" fill="#4CAF50"/>
+  <!-- Top crossbar -->
+  <rect x="6" y="4" width="36" height="3" rx="1" fill="#4CAF50"/>
+  <!-- Seat -->
+  <rect x="14" y="32" width="20" height="3" rx="1" fill="#4CAF50"/>
+  <!-- Seat back -->
+  <rect x="14" y="18" width="3" height="14" rx="1" fill="#4CAF50"/>
+  <!-- Weight stack -->
+  <rect x="34" y="10" width="5" height="3" rx="0.5" fill="#4CAF50"/>
+  <rect x="34" y="14" width="5" height="3" rx="0.5" fill="#4CAF50"/>
+  <rect x="34" y="18" width="5" height="3" rx="0.5" fill="#4CAF50"/>
+  <rect x="34" y="22" width="5" height="3" rx="0.5" fill="#4CAF50" opacity="0.6"/>
+  <rect x="34" y="26" width="5" height="3" rx="0.5" fill="#4CAF50" opacity="0.4"/>
+  <!-- Lever arm -->
+  <path d="M17,18 L24,12 L32,12" stroke="#4CAF50" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Base -->
+  <rect x="4" y="42" width="40" height="3" rx="1" fill="#4CAF50"/>
+</svg>

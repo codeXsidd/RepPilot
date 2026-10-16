@@ -1,21 +1,23 @@
 # Exercise Library
 
-RepPilot ships with 152 built-in exercises across 10 muscle-group categories. All exercises include complete metadata for guided workouts, progressive overload, and safety.
+RepPilot ships with 255 built-in exercises across 12 muscle-group categories. All exercises include complete metadata for guided workouts, progressive overload, and safety.
 
 ## Categories
 
 | Category   | Count | Examples                                    |
 |------------|-------|---------------------------------------------|
-| Chest      | 15    | Flat Barbell Bench Press, Cable Crossover   |
-| Back       | 17    | Barbell Bent-Over Row, Pull-Up              |
-| Shoulders  | 13    | Overhead Press, Lateral Raise               |
-| Biceps     | 13    | Barbell Curl, Hammer Curl                   |
-| Triceps    | 10    | Close-Grip Bench Press, Tricep Dip          |
-| Legs       | 15    | Barbell Back Squat, Leg Press               |
-| Glutes     | 15    | Barbell Hip Thrust, Bulgarian Split Squat   |
-| Calves     | 8     | Standing Calf Raise, Seated Calf Raise      |
-| Core       | 17    | Plank, Cable Woodchop, Hanging Leg Raise    |
-| Full Body  | 29    | Deadlift, Burpee, Farmer's Walk             |
+| Chest      | 15+   | Flat Barbell Bench Press, Cable Crossover   |
+| Back       | 17+   | Barbell Bent-Over Row, Pull-Up              |
+| Shoulders  | 13+   | Overhead Press, Lateral Raise               |
+| Biceps     | 13+   | Barbell Curl, Hammer Curl                   |
+| Triceps    | 10+   | Close-Grip Bench Press, Tricep Dip          |
+| Legs       | 15+   | Barbell Back Squat, Leg Press               |
+| Glutes     | 15+   | Barbell Hip Thrust, Bulgarian Split Squat   |
+| Calves     | 8+    | Standing Calf Raise, Seated Calf Raise      |
+| Core       | 29+   | Plank, Dragon Flag, Toes-to-Bar             |
+| Full Body  | 39+   | Deadlift, Power Clean, Turkish Get-Up       |
+| Forearms   | 10    | Farmer's Hold, Wrist Curl, Dead Hang        |
+| Mobility   | 12    | Hip Circle, Cat-Cow, World's Greatest Stretch |
 
 ## Exercise Metadata
 
@@ -73,4 +75,4 @@ Exercises are stored in the `exercises` table (schema v7) with 30 columns. The v
 
 ## Stable IDs
 
-Built-in exercises use stable IDs (`default-ex-001` through `default-ex-152`). These IDs never change across app updates, ensuring workout history and progressive overload data remain linked correctly.
+Built-in exercises use stable IDs (`default-ex-001` through `default-ex-255`). These IDs never change across app updates, ensuring workout history and progressive overload data remain linked correctly.
