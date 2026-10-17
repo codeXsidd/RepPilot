@@ -1,7 +1,7 @@
 name: rep_pilot
 description: "A free, offline-first Android fitness app."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.2.0+3
 
 environment:
   sdk: ^3.13.4
@@ -23,6 +23,8 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   flutter_lints: ^6.0.0
   sqflite_common_ffi: ^2.3.4

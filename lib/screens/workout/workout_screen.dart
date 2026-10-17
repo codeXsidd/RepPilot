@@ -348,6 +348,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               ),
             ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'workout_fab',
         onPressed: () => _navigateToForm(),
         tooltip: 'New Routine',
         child: const Icon(Icons.add),

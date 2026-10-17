@@ -319,6 +319,7 @@ class _NutritionDashboardState extends State<NutritionDashboard> {
               ),
             ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'diet_fab',
         onPressed: () => _addFoodEntry('snack'),
         tooltip: 'Log Food',
         child: const Icon(Icons.add),
