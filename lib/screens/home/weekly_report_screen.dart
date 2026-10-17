@@ -93,7 +93,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                   children: [
                     IconButton(
                       onPressed: _previousWeek,
-                      icon: const Icon(Icons.chevron_left),
+                      icon: const Icon(Icons.chevron_left_rounded),
                     ),
                     Text(
                       '${df.format(_report!.weekStart)} — ${df.format(_report!.weekEnd)}',
@@ -103,7 +103,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                     ),
                     IconButton(
                       onPressed: _nextWeek,
-                      icon: const Icon(Icons.chevron_right),
+                      icon: const Icon(Icons.chevron_right_rounded),
                     ),
                   ],
                 ),
@@ -175,7 +175,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      Icons.emoji_events,
+                                      Icons.emoji_events_rounded,
                                       color: theme.colorScheme.primary,
                                       size: 20,
                                     ),

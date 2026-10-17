@@ -9,6 +9,7 @@ import '../../models/water_entry.dart';
 import '../../repositories/food_entry_repository.dart';
 import '../../repositories/personal_goal_repository.dart';
 import '../../repositories/water_entry_repository.dart';
+import '../../theme/app_theme.dart';
 import 'food_log_form.dart';
 import 'food_search_screen.dart';
 import 'meal_template_screen.dart';
@@ -139,6 +140,9 @@ class _NutritionDashboardState extends State<NutritionDashboard> {
             child: const Text('Cancel'),
           ),
           FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+            ),
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('Delete'),
           ),
@@ -249,7 +253,7 @@ class _NutritionDashboardState extends State<NutritionDashboard> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search_rounded),
             tooltip: 'Food Database',
             onPressed: () => Navigator.push<void>(
               context,
@@ -257,7 +261,7 @@ class _NutritionDashboardState extends State<NutritionDashboard> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.bar_chart),
+            icon: const Icon(Icons.bar_chart_rounded),
             tooltip: 'Weekly Summary',
             onPressed: () => Navigator.push<void>(
               context,
@@ -322,7 +326,7 @@ class _NutritionDashboardState extends State<NutritionDashboard> {
         heroTag: 'diet_fab',
         onPressed: () => _addFoodEntry('snack'),
         tooltip: 'Log Food',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_rounded),
       ),
     );
   }
@@ -349,7 +353,10 @@ class _DateNavigator extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        IconButton(icon: const Icon(Icons.chevron_left), onPressed: onPrevious),
+        IconButton(
+          icon: const Icon(Icons.chevron_left_rounded),
+          onPressed: onPrevious,
+        ),
         GestureDetector(
           onTap: isToday ? null : onToday,
           child: Column(
@@ -371,7 +378,7 @@ class _DateNavigator extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.chevron_right),
+          icon: const Icon(Icons.chevron_right_rounded),
           onPressed: isToday ? null : onNext,
         ),
       ],
@@ -410,12 +417,15 @@ class _DailySummaryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Daily Summary',
-              style: theme.textTheme.titleSmall?.copyWith(
+              'DAILY SUMMARY',
+              style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurfaceVariant,
+                letterSpacing: 1.0,
+                fontSize: 11,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             _NutrientProgress(
               label: 'Calories',
               value: calories,
@@ -424,7 +434,7 @@ class _DailySummaryCard extends StatelessWidget {
               color: theme.colorScheme.primary,
               onSetGoal: onSetCalorieGoal,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             _NutrientProgress(
               label: 'Protein',
               value: protein,
@@ -433,7 +443,7 @@ class _DailySummaryCard extends StatelessWidget {
               color: theme.colorScheme.tertiary,
               onSetGoal: onSetProteinGoal,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             Row(
               children: [
                 _MacroChip(
@@ -481,7 +491,12 @@ class _NutrientProgress extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: theme.textTheme.bodyMedium),
+            Text(
+              label,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             GestureDetector(
               onTap: onSetGoal,
               child: Text(
@@ -492,18 +507,19 @@ class _NutrientProgress extends StatelessWidget {
                   color: goal == null
                       ? theme.colorScheme.primary
                       : theme.colorScheme.onSurfaceVariant,
+                  fontFeatures: [const FontFeature.tabularFigures()],
                 ),
               ),
             ),
           ],
         ),
         if (goal != null) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: progress,
-              backgroundColor: color.withValues(alpha: 0.15),
+              backgroundColor: color.withValues(alpha: 0.12),
               valueColor: AlwaysStoppedAnimation(color),
               minHeight: 6,
             ),
@@ -523,13 +539,19 @@ class _MacroChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? AppColors.darkCardHigh : AppColors.lightCard,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
       ),
-      child: Text('$label: $value', style: theme.textTheme.labelSmall),
+      child: Text(
+        '$label: $value',
+        style: theme.textTheme.labelSmall?.copyWith(
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 }
@@ -561,13 +583,13 @@ class _MealSection extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(icon, size: 20, color: theme.colorScheme.primary),
+                Icon(icon, size: 18, color: theme.colorScheme.primary),
                 const SizedBox(width: 8),
                 Text(
                   label,
@@ -581,6 +603,7 @@ class _MealSection extends StatelessWidget {
                     '${mealCalories.toStringAsFixed(0)} kcal',
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
+                      fontFeatures: [const FontFeature.tabularFigures()],
                     ),
                   ),
                 const SizedBox(width: 4),
@@ -589,15 +612,18 @@ class _MealSection extends StatelessWidget {
                   width: 28,
                   child: IconButton(
                     padding: EdgeInsets.zero,
-                    iconSize: 20,
-                    icon: const Icon(Icons.add),
+                    iconSize: 18,
+                    icon: const Icon(Icons.add_rounded),
                     onPressed: onAdd,
                   ),
                 ),
               ],
             ),
             if (entries.isNotEmpty) ...[
-              const Divider(height: 12),
+              Divider(
+                height: 16,
+                color: theme.colorScheme.outline.withValues(alpha: 0.1),
+              ),
               for (final entry in entries)
                 Dismissible(
                   key: ValueKey(entry.id),
@@ -606,7 +632,10 @@ class _MealSection extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.only(right: 16),
                     color: theme.colorScheme.error,
-                    child: Icon(Icons.delete, color: theme.colorScheme.onError),
+                    child: Icon(
+                      Icons.delete_rounded,
+                      color: theme.colorScheme.onError,
+                    ),
                   ),
                   onDismissed: (_) => onDelete(entry),
                   child: ListTile(
@@ -623,6 +652,7 @@ class _MealSection extends StatelessWidget {
                       '${(entry.proteinGrams ?? 0).toStringAsFixed(0)}g P',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
+                        fontFeatures: [const FontFeature.tabularFigures()],
                       ),
                     ),
                     onTap: () => onTap(entry),
@@ -662,16 +692,16 @@ class _WaterSection extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(
-                  Icons.water_drop_outlined,
-                  size: 20,
-                  color: theme.colorScheme.primary,
+                  Icons.water_drop_rounded,
+                  size: 18,
+                  color: const Color(0xFF42A5F5),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -691,41 +721,38 @@ class _WaterSection extends StatelessWidget {
                       color: goalMl == null
                           ? theme.colorScheme.primary
                           : theme.colorScheme.onSurfaceVariant,
+                      fontFeatures: [const FontFeature.tabularFigures()],
                     ),
                   ),
                 ),
               ],
             ),
             if (goalMl != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: progress,
-                  backgroundColor: theme.colorScheme.primary.withValues(
-                    alpha: 0.15,
-                  ),
-                  valueColor: AlwaysStoppedAnimation(theme.colorScheme.primary),
+                  backgroundColor: const Color(0xFF42A5F5)
+                      .withValues(alpha: 0.12),
+                  valueColor: const AlwaysStoppedAnimation(Color(0xFF42A5F5)),
                   minHeight: 6,
                 ),
               ),
             ],
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Row(
               children: [
-                ActionChip(
-                  label: const Text('+250 ml'),
-                  onPressed: () => onAdd(250),
-                ),
+                _WaterButton(label: '+250 ml', onTap: () => onAdd(250)),
                 const SizedBox(width: 8),
-                ActionChip(
-                  label: const Text('+500 ml'),
-                  onPressed: () => onAdd(500),
-                ),
+                _WaterButton(label: '+500 ml', onTap: () => onAdd(500)),
               ],
             ),
             if (entries.isNotEmpty) ...[
-              const Divider(height: 16),
+              Divider(
+                height: 20,
+                color: theme.colorScheme.outline.withValues(alpha: 0.1),
+              ),
               for (final entry in entries)
                 Dismissible(
                   key: ValueKey(entry.id),
@@ -734,11 +761,14 @@ class _WaterSection extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.only(right: 16),
                     color: theme.colorScheme.error,
-                    child: Icon(Icons.delete, color: theme.colorScheme.onError),
+                    child: Icon(
+                      Icons.delete_rounded,
+                      color: theme.colorScheme.onError,
+                    ),
                   ),
                   onDismissed: (_) => onDelete(entry),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 3),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -758,6 +788,36 @@ class _WaterSection extends StatelessWidget {
                 ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WaterButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _WaterButton({required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    return Material(
+      color: const Color(0xFF42A5F5).withValues(alpha: isDark ? 0.12 : 0.08),
+      borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          child: Text(
+            label,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: const Color(0xFF42A5F5),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );

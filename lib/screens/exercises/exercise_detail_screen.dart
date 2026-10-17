@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/exercise.dart';
 import '../../repositories/exercise_repository.dart';
+import '../../theme/app_theme.dart';
 import '../progress/exercise_history_screen.dart';
 import 'exercise_settings_screen.dart';
 
@@ -44,14 +45,16 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              _exercise.isFavorite ? Icons.star : Icons.star_border,
-              color: _exercise.isFavorite ? Colors.amber : null,
+              _exercise.isFavorite
+                  ? Icons.star_rounded
+                  : Icons.star_outline_rounded,
+              color: _exercise.isFavorite ? AppColors.warning : null,
             ),
             tooltip: _exercise.isFavorite ? 'Remove Favorite' : 'Add Favorite',
             onPressed: _toggleFavorite,
           ),
           IconButton(
-            icon: const Icon(Icons.tune),
+            icon: const Icon(Icons.tune_rounded),
             tooltip: 'Overload Settings',
             onPressed: () {
               Navigator.push<void>(
@@ -68,60 +71,60 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.pagePadding),
         children: [
           Text(
             _exercise.name,
             style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Wrap(
             spacing: 8,
-            runSpacing: 4,
+            runSpacing: 6,
             children: [
               _Chip(
                 label: _capitalize(_exercise.category),
-                color: cs.primaryContainer,
-                textColor: cs.onPrimaryContainer,
+                color: cs.primary.withValues(alpha: 0.12),
+                textColor: cs.primary,
               ),
               if (_exercise.difficulty.isNotEmpty)
                 _Chip(
                   label: _capitalize(_exercise.difficulty),
-                  color: _difficultyColor(cs),
-                  textColor: _difficultyTextColor(cs),
+                  color: _difficultyColor().withValues(alpha: 0.12),
+                  textColor: _difficultyColor(),
                 ),
               if (_exercise.equipment.isNotEmpty)
                 _Chip(
                   label: _equipmentLabel(_exercise.equipment),
-                  color: cs.surfaceContainerHighest,
-                  textColor: cs.onSurface,
+                  color: cs.onSurface.withValues(alpha: 0.08),
+                  textColor: cs.onSurfaceVariant,
                 ),
               if (_exercise.isBodyweight)
                 _Chip(
                   label: 'Bodyweight',
-                  color: cs.tertiaryContainer,
-                  textColor: cs.onTertiaryContainer,
+                  color: cs.tertiary.withValues(alpha: 0.12),
+                  textColor: cs.tertiary,
                 ),
               if (_exercise.suitableForHome)
                 _Chip(
                   label: 'Home',
-                  color: cs.secondaryContainer,
-                  textColor: cs.onSecondaryContainer,
+                  color: cs.secondary.withValues(alpha: 0.12),
+                  textColor: cs.secondary,
                 ),
             ],
           ),
 
           if (_exercise.description.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            _SectionTitle(text: 'DESCRIPTION'),
-            const SizedBox(height: 4),
+            const SizedBox(height: 24),
+            const _SectionTitle(text: 'DESCRIPTION'),
+            const SizedBox(height: 6),
             Text(_exercise.description, style: theme.textTheme.bodyMedium),
           ],
 
-          const SizedBox(height: 20),
-          _SectionTitle(text: 'TARGET MUSCLES'),
+          const SizedBox(height: 24),
+          const _SectionTitle(text: 'TARGET MUSCLES'),
           const SizedBox(height: 8),
           _InfoRow(
             label: 'Primary',
@@ -133,27 +136,36 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             _InfoRow(label: 'Secondary', value: _exercise.secondaryMuscles),
 
           if (_exercise.instructions.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            _SectionTitle(text: 'HOW TO PERFORM'),
+            const SizedBox(height: 24),
+            const _SectionTitle(text: 'HOW TO PERFORM'),
             const SizedBox(height: 8),
-            Text(_exercise.instructions, style: theme.textTheme.bodyMedium),
+            Text(
+              _exercise.instructions,
+              style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+            ),
           ],
 
           if (_exercise.safetyNotes.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            _SectionTitle(text: 'SAFETY NOTES'),
+            const SizedBox(height: 24),
+            const _SectionTitle(text: 'SAFETY NOTES'),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: cs.errorContainer.withAlpha(50),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: cs.error.withAlpha(60)),
+                color: AppColors.error.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                border: Border.all(
+                  color: AppColors.error.withValues(alpha: 0.2),
+                ),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.warning_amber, size: 20, color: cs.error),
+                  Icon(
+                    Icons.warning_amber_rounded,
+                    size: 20,
+                    color: AppColors.error,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -166,37 +178,50 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             ),
           ],
 
-          const SizedBox(height: 20),
-          _SectionTitle(text: 'DEFAULT PROGRAMMING'),
+          const SizedBox(height: 24),
+          const _SectionTitle(text: 'DEFAULT PROGRAMMING'),
           const SizedBox(height: 8),
-          _InfoRow(label: 'Sets', value: '${_exercise.defaultSets}'),
-          _InfoRow(
-            label: 'Rep Range',
-            value: '${_exercise.defaultRepsMin}-${_exercise.defaultRepsMax}',
-          ),
-          _InfoRow(label: 'Rest', value: '${_exercise.defaultRestSeconds}s'),
-          if (!_exercise.isBodyweight)
-            _InfoRow(
-              label: 'Increment',
-              value: '${_exercise.defaultIncrementKg} kg',
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.cardPadding),
+              child: Column(
+                children: [
+                  _ProgramRow(label: 'Sets', value: '${_exercise.defaultSets}'),
+                  _ProgramRow(
+                    label: 'Rep Range',
+                    value:
+                        '${_exercise.defaultRepsMin}–${_exercise.defaultRepsMax}',
+                  ),
+                  _ProgramRow(
+                    label: 'Rest',
+                    value: '${_exercise.defaultRestSeconds}s',
+                  ),
+                  if (!_exercise.isBodyweight)
+                    _ProgramRow(
+                      label: 'Increment',
+                      value: '${_exercise.defaultIncrementKg} kg',
+                    ),
+                ],
+              ),
             ),
+          ),
 
           if (_exercise.movementPattern.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            _SectionTitle(text: 'MOVEMENT INFO'),
+            const SizedBox(height: 24),
+            const _SectionTitle(text: 'MOVEMENT INFO'),
             const SizedBox(height: 8),
             _InfoRow(
               label: 'Pattern',
               value: _capitalize(_exercise.movementPattern),
             ),
             if (_exercise.isUnilateral)
-              _InfoRow(label: 'Type', value: 'Unilateral (single-side)'),
+              const _InfoRow(label: 'Type', value: 'Unilateral (single-side)'),
           ],
 
           if (_exercise.notes.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            _SectionTitle(text: 'NOTES'),
-            const SizedBox(height: 4),
+            const SizedBox(height: 24),
+            const _SectionTitle(text: 'NOTES'),
+            const SizedBox(height: 6),
             Text(_exercise.notes, style: theme.textTheme.bodyMedium),
           ],
 
@@ -213,7 +238,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                 ),
               );
             },
-            icon: const Icon(Icons.show_chart),
+            icon: const Icon(Icons.show_chart_rounded),
             label: const Text('View History & Progression'),
           ),
 
@@ -233,19 +258,11 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     );
   }
 
-  Color _difficultyColor(ColorScheme cs) {
+  Color _difficultyColor() {
     return switch (_exercise.difficulty) {
-      'beginner' => Colors.green.withAlpha(40),
-      'advanced' => Colors.orange.withAlpha(40),
-      _ => cs.surfaceContainerHighest,
-    };
-  }
-
-  Color _difficultyTextColor(ColorScheme cs) {
-    return switch (_exercise.difficulty) {
-      'beginner' => Colors.green.shade800,
-      'advanced' => Colors.orange.shade800,
-      _ => cs.onSurface,
+      'beginner' => AppColors.success,
+      'advanced' => AppColors.warning,
+      _ => AppColors.primaryBlue,
     };
   }
 
@@ -271,10 +288,10 @@ class _Chip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
       ),
       child: Text(
         label,
@@ -296,7 +313,8 @@ class _SectionTitle extends StatelessWidget {
       text,
       style: theme.textTheme.labelMedium?.copyWith(
         color: theme.colorScheme.onSurfaceVariant,
-        letterSpacing: 0.5,
+        letterSpacing: 1.0,
+        fontSize: 11,
         fontWeight: FontWeight.w600,
       ),
     );
@@ -327,6 +345,38 @@ class _InfoRow extends StatelessWidget {
             ),
           ),
           Expanded(child: Text(value, style: theme.textTheme.bodyMedium)),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProgramRow extends StatelessWidget {
+  final String label;
+  final String value;
+  const _ProgramRow({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          Text(
+            value,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              fontFeatures: [const FontFeature.tabularFigures()],
+            ),
+          ),
         ],
       ),
     );

@@ -7,6 +7,7 @@ import 'package:rep_pilot/models/workout_session.dart';
 import 'package:rep_pilot/models/workout_set.dart';
 import 'package:rep_pilot/repositories/overload_recommendation_repository.dart';
 import 'package:rep_pilot/services/overload_service.dart';
+import 'package:rep_pilot/theme/app_theme.dart';
 
 class SessionSummaryScreen extends StatefulWidget {
   final WorkoutSession session;
@@ -158,15 +159,23 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  Icon(
-                    Icons.check_circle,
-                    size: 56,
-                    color: theme.colorScheme.primary,
+                  Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: AppColors.success.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.check_circle_rounded,
+                      size: 36,
+                      color: AppColors.success,
+                    ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   Text(
                     widget.session.routineName.isNotEmpty
                         ? widget.session.routineName
@@ -196,6 +205,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                   icon: Icons.timer_outlined,
                   label: 'Duration',
                   value: _formatDuration(duration),
+                  color: theme.colorScheme.primary,
                 ),
               ),
               const SizedBox(width: 12),
@@ -204,6 +214,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                   icon: Icons.check_box_outlined,
                   label: 'Sets',
                   value: '${completedSets.length}',
+                  color: AppColors.success,
                 ),
               ),
             ],
@@ -213,17 +224,19 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
             children: [
               Expanded(
                 child: _StatCard(
-                  icon: Icons.fitness_center,
+                  icon: Icons.fitness_center_rounded,
                   label: 'Volume',
                   value: '${totalVolume.toStringAsFixed(0)} kg',
+                  color: AppColors.warning,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: _StatCard(
-                  icon: Icons.whatshot_outlined,
+                  icon: Icons.whatshot_rounded,
                   label: 'Warm-up Sets',
                   value: '${warmupSets.length}',
+                  color: theme.colorScheme.tertiary,
                 ),
               ),
             ],
@@ -376,13 +389,13 @@ class _RecommendationCard extends StatelessWidget {
   IconData _statusIcon() {
     switch (status) {
       case 'accepted':
-        return Icons.check_circle;
+        return Icons.check_circle_rounded;
       case 'dismissed':
-        return Icons.cancel;
+        return Icons.cancel_rounded;
       case 'edited':
-        return Icons.edit;
+        return Icons.edit_rounded;
       default:
-        return Icons.trending_up;
+        return Icons.trending_up_rounded;
     }
   }
 
@@ -459,7 +472,7 @@ class _RecommendationCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Icon(
-                        Icons.arrow_forward,
+                        Icons.arrow_forward_rounded,
                         size: 16,
                         color: theme.colorScheme.primary,
                       ),
@@ -514,11 +527,13 @@ class _StatCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
+  final Color color;
 
   const _StatCard({
     required this.icon,
     required this.label,
     required this.value,
+    required this.color,
   });
 
   @override
@@ -529,12 +544,21 @@ class _StatCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Icon(icon, color: theme.colorScheme.primary),
-            const SizedBox(height: 8),
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+              ),
+              child: Icon(icon, color: color, size: 20),
+            ),
+            const SizedBox(height: 10),
             Text(
               value,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
+                fontFeatures: [const FontFeature.tabularFigures()],
               ),
             ),
             const SizedBox(height: 2),

@@ -92,7 +92,7 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
                   const SectionHeader(title: 'HISTORY'),
                   if (_entries.isEmpty)
                     const EmptyState(
-                      icon: Icons.straighten,
+                      icon: Icons.straighten_rounded,
                       title: 'No Measurements',
                       description:
                           'Tap + to log body measurements. Trends will '
@@ -113,7 +113,7 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _addOrEdit(),
         tooltip: 'Log Measurements',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_rounded),
       ),
     );
   }
@@ -216,7 +216,7 @@ class _MeasurementTile extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 16),
         color: theme.colorScheme.error,
-        child: Icon(Icons.delete, color: theme.colorScheme.onError),
+        child: Icon(Icons.delete_rounded, color: theme.colorScheme.onError),
       ),
       confirmDismiss: (_) async {
         onDismissed();
@@ -227,7 +227,7 @@ class _MeasurementTile extends StatelessWidget {
         subtitle: Text(DateFormat.yMMMd().format(entry.date)),
         trailing: entry.notes.isNotEmpty
             ? Icon(
-                Icons.note_outlined,
+                Icons.note_rounded,
                 size: 18,
                 color: theme.colorScheme.onSurfaceVariant,
               )

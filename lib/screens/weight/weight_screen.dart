@@ -166,7 +166,7 @@ class _WeightScreenState extends State<WeightScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _addOrEditEntry(),
         tooltip: 'Log Weight',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_rounded),
       ),
     );
   }
@@ -304,6 +304,7 @@ class _StatColumn extends StatelessWidget {
           value,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w700,
+            fontFeatures: [const FontFeature.tabularFigures()],
           ),
           textAlign: TextAlign.center,
         ),
@@ -347,7 +348,7 @@ class _WeightEntryTile extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 16),
         color: theme.colorScheme.error,
-        child: Icon(Icons.delete, color: theme.colorScheme.onError),
+        child: Icon(Icons.delete_rounded, color: theme.colorScheme.onError),
       ),
       confirmDismiss: (_) async {
         onDismissed();
@@ -358,7 +359,7 @@ class _WeightEntryTile extends StatelessWidget {
         subtitle: Text(DateFormat.yMMMd().format(entry.date)),
         trailing: entry.notes.isNotEmpty
             ? Icon(
-                Icons.note_outlined,
+                Icons.sticky_note_2_outlined,
                 size: 18,
                 color: theme.colorScheme.onSurfaceVariant,
               )

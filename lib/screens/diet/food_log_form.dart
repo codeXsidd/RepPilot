@@ -269,7 +269,7 @@ class _FoodLogFormState extends State<FoodLogForm> {
                   controller: _searchController,
                   decoration: const InputDecoration(
                     labelText: 'Search foods',
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search_rounded),
                     border: OutlineInputBorder(),
                   ),
                   onChanged: _search,
@@ -292,7 +292,7 @@ class _FoodLogFormState extends State<FoodLogForm> {
                           ),
                           trailing: food.isFavorite
                               ? Icon(
-                                  Icons.favorite,
+                                  Icons.favorite_rounded,
                                   size: 16,
                                   color: theme.colorScheme.error,
                                 )

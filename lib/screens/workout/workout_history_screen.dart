@@ -71,7 +71,7 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
           ? const Center(child: CircularProgressIndicator())
           : _sessions.isEmpty
           ? const EmptyState(
-              icon: Icons.history,
+              icon: Icons.history_rounded,
               title: 'No Workout History',
               description:
                   'Complete a workout to see it here. Your training '
@@ -143,7 +143,7 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
                             ),
                             const SizedBox(width: 4),
                             Icon(
-                              Icons.chevron_right,
+                              Icons.chevron_right_rounded,
                               color: theme.colorScheme.outlineVariant,
                             ),
                           ],

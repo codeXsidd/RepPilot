@@ -144,7 +144,9 @@ class _FoodFormScreenState extends State<FoodFormScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              _isFavorite ? Icons.favorite : Icons.favorite_border,
+              _isFavorite
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
               color: _isFavorite ? theme.colorScheme.error : null,
             ),
             onPressed: () => setState(() => _isFavorite = !_isFavorite),
@@ -165,7 +167,7 @@ class _FoodFormScreenState extends State<FoodFormScreen> {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.info_outline,
+                        Icons.info_rounded,
                         color: theme.colorScheme.onTertiaryContainer,
                         size: 20,
                       ),

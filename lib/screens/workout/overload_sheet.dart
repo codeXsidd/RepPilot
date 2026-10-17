@@ -33,7 +33,10 @@ class OverloadSheet extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.trending_up, color: theme.colorScheme.primary),
+                Icon(
+                  Icons.trending_up_rounded,
+                  color: theme.colorScheme.primary,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   'Progressive Overload',

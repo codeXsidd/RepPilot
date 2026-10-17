@@ -15,10 +15,11 @@ class SectionHeader extends StatelessWidget {
         children: [
           Text(
             title,
-            style: theme.textTheme.titleSmall?.copyWith(
+            style: theme.textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurfaceVariant,
-              letterSpacing: 0.5,
+              letterSpacing: 1.0,
+              fontSize: 11,
             ),
           ),
           if (trailing != null) ...[const Spacer(), trailing!],

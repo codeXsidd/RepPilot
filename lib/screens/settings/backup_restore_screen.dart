@@ -349,7 +349,7 @@ class _BackupRestoreScreenState extends State<BackupRestoreScreen> {
                   child: Column(
                     children: [
                       ListTile(
-                        leading: const Icon(Icons.save_alt),
+                        leading: const Icon(Icons.save_alt_rounded),
                         title: const Text('Create JSON Backup'),
                         subtitle: const Text('Full backup of all your data'),
                         onTap: _exportJson,
@@ -380,7 +380,7 @@ class _BackupRestoreScreenState extends State<BackupRestoreScreen> {
                 const SectionHeader(title: 'RESTORE'),
                 Card(
                   child: ListTile(
-                    leading: const Icon(Icons.restore),
+                    leading: const Icon(Icons.restore_rounded),
                     title: const Text('Restore from Backup'),
                     subtitle: const Text(
                       'Import a previously exported JSON backup',
@@ -399,7 +399,7 @@ class _BackupRestoreScreenState extends State<BackupRestoreScreen> {
                   ),
                   child: ListTile(
                     leading: Icon(
-                      Icons.delete_forever,
+                      Icons.delete_forever_rounded,
                       color: theme.colorScheme.error,
                     ),
                     title: Text(

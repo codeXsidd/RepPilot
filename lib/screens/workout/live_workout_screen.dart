@@ -16,6 +16,7 @@ import 'package:rep_pilot/services/rest_timer_service.dart';
 import 'package:rep_pilot/models/workout_set.dart';
 import 'package:rep_pilot/screens/workout/session_summary_screen.dart';
 import 'package:rep_pilot/screens/exercises/exercise_picker_screen.dart';
+import 'package:rep_pilot/theme/app_theme.dart';
 
 class LiveWorkoutScreen extends StatefulWidget {
   final String? routineId;
@@ -265,26 +266,47 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          titleSpacing: 0,
+          title: Row(
             children: [
-              Text(
-                session.routineName.isNotEmpty
-                    ? session.routineName
-                    : 'Workout',
-                style: theme.textTheme.titleMedium,
-              ),
-              Text(
-                _formatDuration(service.workoutDuration),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      session.routineName.isNotEmpty
+                          ? session.routineName
+                          : 'Workout',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.timer_outlined,
+                          size: 14,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          _formatDuration(service.workoutDuration),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                            fontFeatures: [const FontFeature.tabularFigures()],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.add),
+              icon: const Icon(Icons.add_rounded),
               tooltip: 'Add Exercise',
               onPressed: _addExercise,
             ),
@@ -303,17 +325,29 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.fitness_center_outlined,
-                      size: 48,
-                      color: theme.colorScheme.outlineVariant,
+                    Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(
+                          alpha: 0.08,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.fitness_center_outlined,
+                        size: 28,
+                        color: theme.colorScheme.primary.withValues(alpha: 0.5),
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'No exercises yet',
-                      style: theme.textTheme.titleMedium,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     FilledButton.icon(
                       onPressed: _addExercise,
                       icon: const Icon(Icons.add),
@@ -392,9 +426,9 @@ class _ExerciseSection extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.fromLTRB(16, 14, 12, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -407,17 +441,18 @@ class _ExerciseSection extends StatelessWidget {
                       Text(
                         exerciseName,
                         style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       if (previousLabel.isNotEmpty)
                         Padding(
-                          padding: const EdgeInsets.only(top: 2),
+                          padding: const EdgeInsets.only(top: 3),
                           child: Text(
                             previousLabel,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                               fontStyle: FontStyle.italic,
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -426,23 +461,31 @@ class _ExerciseSection extends StatelessWidget {
                 ),
                 TextButton.icon(
                   onPressed: onAddSet,
-                  icon: const Icon(Icons.add, size: 18),
+                  icon: const Icon(Icons.add_rounded, size: 16),
                   label: const Text('Set'),
+                  style: TextButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    textStyle: theme.textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 2),
               child: Row(
                 children: [
-                  const SizedBox(
-                    width: 36,
+                  SizedBox(
+                    width: 34,
                     child: Text(
                       'SET',
-                      style: TextStyle(
-                        fontSize: 11,
+                      style: theme.textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurfaceVariant,
+                        fontSize: 10,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
@@ -450,10 +493,11 @@ class _ExerciseSection extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'KG',
-                      style: TextStyle(
-                        fontSize: 11,
+                      style: theme.textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: theme.colorScheme.onSurfaceVariant,
+                        fontSize: 10,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
@@ -461,14 +505,15 @@ class _ExerciseSection extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'REPS',
-                      style: TextStyle(
-                        fontSize: 11,
+                      style: theme.textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: theme.colorScheme.onSurfaceVariant,
+                        fontSize: 10,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 48),
+                  const SizedBox(width: 44),
                 ],
               ),
             ),
@@ -637,8 +682,9 @@ class _SetRowState extends State<_SetRow> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final set = widget.set;
+    final isDark = theme.brightness == Brightness.dark;
     final completedBg = set.completed
-        ? theme.colorScheme.primaryContainer.withValues(alpha: 0.3)
+        ? theme.colorScheme.primary.withValues(alpha: isDark ? 0.1 : 0.06)
         : null;
 
     return Dismissible(
@@ -647,8 +693,14 @@ class _SetRowState extends State<_SetRow> {
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 16),
-        color: theme.colorScheme.errorContainer,
-        child: Icon(Icons.delete, color: theme.colorScheme.onErrorContainer),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.errorContainer,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+        ),
+        child: Icon(
+          Icons.delete_rounded,
+          color: theme.colorScheme.onErrorContainer,
+        ),
       ),
       onDismissed: (_) {
         context.read<ActiveWorkoutService>().removeSet(
@@ -661,23 +713,26 @@ class _SetRowState extends State<_SetRow> {
         child: Container(
           decoration: BoxDecoration(
             color: completedBg,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
           child: Row(
             children: [
               GestureDetector(
                 onTap: _toggleWarmup,
                 child: SizedBox(
-                  width: 36,
-                  child: Text(
-                    set.isWarmup ? 'W' : '${set.setNumber}',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: set.isWarmup
-                          ? theme.colorScheme.tertiary
-                          : theme.colorScheme.onSurface,
+                  width: 34,
+                  child: Center(
+                    child: Text(
+                      set.isWarmup ? 'W' : '${set.setNumber}',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: set.isWarmup
+                            ? theme.colorScheme.tertiary
+                            : set.completed
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurface,
+                      ),
                     ),
                   ),
                 ),
@@ -692,13 +747,41 @@ class _SetRowState extends State<_SetRow> {
                       decimal: true,
                     ),
                     textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontFeatures: [const FontFeature.tabularFigures()],
+                    ),
+                    decoration: InputDecoration(
                       isDense: true,
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 10,
                       ),
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusSm,
+                        ),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.2,
+                          ),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusSm,
+                        ),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.2,
+                          ),
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: set.completed
+                          ? Colors.transparent
+                          : theme.colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.5),
                       hintText: '--',
                     ),
                     onChanged: (_) => _onWeightChanged(),
@@ -714,13 +797,41 @@ class _SetRowState extends State<_SetRow> {
                     controller: _repsCtrl,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontFeatures: [const FontFeature.tabularFigures()],
+                    ),
+                    decoration: InputDecoration(
                       isDense: true,
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 10,
                       ),
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusSm,
+                        ),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.2,
+                          ),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusSm,
+                        ),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.2,
+                          ),
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: set.completed
+                          ? Colors.transparent
+                          : theme.colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.5),
                       hintText: '--',
                     ),
                     onChanged: (_) => _onRepsChanged(),
@@ -742,10 +853,13 @@ class _SetRowState extends State<_SetRow> {
                   ),
                 ),
               SizedBox(
-                width: 48,
-                child: Checkbox(
-                  value: set.completed,
-                  onChanged: _onCheckToggle,
+                width: 44,
+                child: Transform.scale(
+                  scale: 1.1,
+                  child: Checkbox(
+                    value: set.completed,
+                    onChanged: _onCheckToggle,
+                  ),
                 ),
               ),
             ],
@@ -776,26 +890,28 @@ class _BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
+        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+        border: Border(
+          top: BorderSide(
+            color: theme.colorScheme.outline.withValues(
+              alpha: isDark ? 0.15 : 0.08,
+            ),
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (restTimer.isRunning || restTimer.isComplete) ...[
                 _RestTimerBar(restTimer: restTimer),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
               ],
               Row(
                 children: [
@@ -807,10 +923,11 @@ class _BottomBar extends StatelessWidget {
                         Text(
                           '$completedSets / $totalSets sets',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
+                            fontFeatures: [const FontFeature.tabularFigures()],
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 6),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           child: LinearProgressIndicator(
@@ -822,15 +939,21 @@ class _BottomBar extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  FilledButton(
-                    onPressed: isFinishing ? null : onFinish,
-                    child: isFinishing
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('Finish'),
+                  SizedBox(
+                    height: 44,
+                    child: FilledButton(
+                      onPressed: isFinishing ? null : onFinish,
+                      child: isFinishing
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text('Finish'),
+                    ),
                   ),
                 ],
               ),
@@ -856,25 +979,24 @@ class _RestTimerBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isComplete = restTimer.isComplete;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
         color: isComplete
-            ? theme.colorScheme.tertiaryContainer
-            : theme.colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(8),
+            ? AppColors.success.withValues(alpha: isDark ? 0.15 : 0.1)
+            : theme.colorScheme.primary.withValues(alpha: isDark ? 0.12 : 0.08),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
       ),
       child: Row(
         children: [
           Icon(
-            isComplete ? Icons.check_circle : Icons.timer,
+            isComplete ? Icons.check_circle_rounded : Icons.timer_rounded,
             size: 20,
-            color: isComplete
-                ? theme.colorScheme.onTertiaryContainer
-                : theme.colorScheme.onSecondaryContainer,
+            color: isComplete ? AppColors.success : theme.colorScheme.primary,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               isComplete
@@ -883,15 +1005,18 @@ class _RestTimerBar extends StatelessWidget {
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: isComplete
-                    ? theme.colorScheme.onTertiaryContainer
-                    : theme.colorScheme.onSecondaryContainer,
+                    ? AppColors.success
+                    : theme.colorScheme.primary,
+                fontFeatures: [const FontFeature.tabularFigures()],
               ),
             ),
           ),
           if (!isComplete && restTimer.isRunning)
             IconButton(
               icon: Icon(
-                restTimer.isPaused ? Icons.play_arrow : Icons.pause,
+                restTimer.isPaused
+                    ? Icons.play_arrow_rounded
+                    : Icons.pause_rounded,
                 size: 20,
               ),
               onPressed: restTimer.isPaused
@@ -901,7 +1026,7 @@ class _RestTimerBar extends StatelessWidget {
               padding: EdgeInsets.zero,
             ),
           IconButton(
-            icon: const Icon(Icons.close, size: 20),
+            icon: const Icon(Icons.close_rounded, size: 20),
             onPressed: restTimer.reset,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             padding: EdgeInsets.zero,

@@ -12,6 +12,7 @@ import 'package:rep_pilot/repositories/user_profile_repository.dart';
 import 'package:rep_pilot/repositories/workout_session_repository.dart';
 import 'package:rep_pilot/repositories/workout_set_repository.dart';
 import 'package:rep_pilot/services/weight_analytics_service.dart';
+import 'package:rep_pilot/theme/app_theme.dart';
 import 'package:rep_pilot/widgets/empty_state.dart';
 import 'package:rep_pilot/widgets/section_header.dart';
 
@@ -127,7 +128,7 @@ class _ProgressDashboardState extends State<ProgressDashboard>
         title: const Text('Progress'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.calendar_month),
+            icon: const Icon(Icons.calendar_month_rounded),
             tooltip: 'Workout Calendar',
             onPressed: () => Navigator.push<void>(
               context,
@@ -246,28 +247,41 @@ class _WeightTab extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Latest: ${displayWeight(latest.weightKg, weightUnit).toStringAsFixed(1)} $unitLabel',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+                    '${displayWeight(latest.weightKg, weightUnit).toStringAsFixed(1)} $unitLabel',
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
                     ),
                   ),
-                  if (sevenDayAvg != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      '7-day avg: ${displayWeight(sevenDayAvg, weightUnit).toStringAsFixed(1)} $unitLabel',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Current weight',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
-                  ],
-                  if (change != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      'Change: ${change.change >= 0 ? '+' : ''}${displayWeight(change.change, weightUnit).toStringAsFixed(1)} $unitLabel '
-                      'over ${change.days} days',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                  ),
+                  if (sevenDayAvg != null || change != null) ...[
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        if (sevenDayAvg != null)
+                          _MiniStat(
+                            label: '7-day avg',
+                            value:
+                                '${displayWeight(sevenDayAvg, weightUnit).toStringAsFixed(1)} $unitLabel',
+                          ),
+                        if (sevenDayAvg != null && change != null)
+                          const SizedBox(width: 20),
+                        if (change != null)
+                          _MiniStat(
+                            label: '${change.days}d change',
+                            value:
+                                '${change.change >= 0 ? '+' : ''}${displayWeight(change.change, weightUnit).toStringAsFixed(1)} $unitLabel',
+                            valueColor: change.change >= 0
+                                ? AppColors.success
+                                : AppColors.error,
+                          ),
+                      ],
                     ),
                   ],
                 ],
@@ -306,6 +320,38 @@ class _WeightTab extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _MiniStat extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color? valueColor;
+
+  const _MiniStat({required this.label, required this.value, this.valueColor});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        Text(
+          value,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: valueColor,
+            fontFeatures: [const FontFeature.tabularFigures()],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -351,27 +397,81 @@ class _TrainingTab extends StatelessWidget {
       children: [
         const SectionHeader(title: 'WORKOUT CONSISTENCY'),
         Card(
-          child: ListTile(
-            leading: Icon(
-              Icons.fitness_center,
-              color: theme.colorScheme.primary,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                  ),
+                  child: Icon(
+                    Icons.fitness_center_rounded,
+                    color: theme.colorScheme.primary,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    consistency,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            title: Text(consistency),
           ),
         ),
         const SizedBox(height: 24),
         const SectionHeader(title: 'WEEKLY VOLUME'),
         Card(
-          child: ListTile(
-            leading: Icon(Icons.bar_chart, color: theme.colorScheme.primary),
-            title: Text(
-              volumeThisWeek > 0
-                  ? '${displayWeight(volumeThisWeek, weightUnit).toStringAsFixed(0)} $unitLabel total'
-                  : 'No volume data this week',
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.tertiary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                  ),
+                  child: Icon(
+                    Icons.bar_chart_rounded,
+                    color: theme.colorScheme.tertiary,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        volumeThisWeek > 0
+                            ? '${displayWeight(volumeThisWeek, weightUnit).toStringAsFixed(0)} $unitLabel'
+                            : 'No volume data this week',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      if (volumeThisWeek > 0)
+                        Text(
+                          'Sum of weight x reps for working sets',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            subtitle: volumeThisWeek > 0
-                ? const Text('Sum of weight x reps for working sets')
-                : null,
           ),
         ),
       ],
@@ -428,7 +528,7 @@ class _MeasurementsTab extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 if (latest.waistCm != null)
                   _MeasurementRow(label: 'Waist', value: latest.waistCm!),
                 if (latest.chestCm != null)
@@ -451,10 +551,21 @@ class _MeasurementsTab extends StatelessWidget {
         ...measurements
             .take(10)
             .map(
-              (m) => ListTile(
-                title: Text(_summaryText(m)),
-                subtitle: Text(DateFormat.yMMMd().format(m.date)),
-                dense: true,
+              (m) => Card(
+                margin: const EdgeInsets.only(bottom: 6),
+                child: ListTile(
+                  title: Text(
+                    _summaryText(m),
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    DateFormat.yMMMd().format(m.date),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  dense: true,
+                ),
               ),
             ),
         const SizedBox(height: 16),
@@ -493,7 +604,7 @@ class _MeasurementRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
           SizedBox(
@@ -509,6 +620,7 @@ class _MeasurementRow extends StatelessWidget {
             '${value.toStringAsFixed(1)} cm',
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
+              fontFeatures: [const FontFeature.tabularFigures()],
             ),
           ),
         ],
@@ -556,12 +668,34 @@ class _RecordsTab extends StatelessWidget {
         final entry = sortedEntries[index - 1];
         final record = entry.value;
         return Card(
+          margin: const EdgeInsets.only(bottom: 6),
           child: ListTile(
-            leading: Icon(Icons.emoji_events, color: theme.colorScheme.primary),
-            title: Text(record.exerciseName),
+            leading: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: AppColors.warning.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+              ),
+              child: Icon(
+                Icons.emoji_events_rounded,
+                color: AppColors.warning,
+                size: 18,
+              ),
+            ),
+            title: Text(
+              record.exerciseName,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             subtitle: Text(
               '${displayWeight(record.maxWeight, weightUnit).toStringAsFixed(1)} $unitLabel '
               'x ${record.maxReps} reps',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontFeatures: [const FontFeature.tabularFigures()],
+              ),
             ),
           ),
         );

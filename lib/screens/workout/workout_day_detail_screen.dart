@@ -15,6 +15,7 @@ import '../../repositories/routine_repository.dart';
 import '../../repositories/workout_session_repository.dart';
 import '../../repositories/workout_set_repository.dart';
 import '../../services/active_workout_service.dart';
+import '../../theme/app_theme.dart';
 import '../exercises/exercise_detail_screen.dart';
 import 'live_workout_screen.dart';
 import 'session_summary_screen.dart';
@@ -355,7 +356,7 @@ class _WorkoutDayDetailScreenState extends State<WorkoutDayDetailScreen> {
               height: 18,
               child: CircularProgressIndicator(strokeWidth: 2),
             )
-          : const Icon(Icons.play_arrow),
+          : const Icon(Icons.play_arrow_rounded),
       label: Text(_starting ? 'Starting...' : 'Start Workout'),
     );
   }
@@ -441,7 +442,7 @@ class _WorkoutOverviewCard extends StatelessWidget {
             Row(
               children: [
                 _InfoChip(
-                  icon: Icons.fitness_center,
+                  icon: Icons.fitness_center_rounded,
                   label: '$exerciseCount exercises',
                 ),
                 const SizedBox(width: 12),
@@ -487,7 +488,7 @@ class _CompletedBanner extends StatelessWidget {
         : '';
 
     return Card(
-      color: Colors.green.withValues(alpha: 0.1),
+      color: AppColors.success.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -495,14 +496,14 @@ class _CompletedBanner extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green[700]),
+                Icon(Icons.check_circle_rounded, color: AppColors.success),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Workout Completed',
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: Colors.green[700],
+                      color: AppColors.success,
                     ),
                   ),
                 ),
@@ -585,12 +586,23 @@ class _ExercisePreviewCard extends StatelessWidget {
                             BlendMode.srcIn,
                           ),
                         )
-                      : CircleAvatar(
-                          backgroundColor: theme.colorScheme.primaryContainer,
+                      : Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.1,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              AppSpacing.radiusSm,
+                            ),
+                          ),
+                          alignment: Alignment.center,
                           child: Text(
                             '$index',
                             style: theme.textTheme.titleSmall?.copyWith(
-                              color: theme.colorScheme.onPrimaryContainer,
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -645,16 +657,16 @@ class _ExercisePreviewCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
-                              Icons.warning_amber,
+                              Icons.warning_amber_rounded,
                               size: 14,
-                              color: Colors.orange[700],
+                              color: AppColors.warning,
                             ),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
                                 ex.safetyNotes,
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.orange[700],
+                                  color: AppColors.warning,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -668,7 +680,7 @@ class _ExercisePreviewCard extends StatelessWidget {
                 ),
                 if (onTap != null)
                   Icon(
-                    Icons.chevron_right,
+                    Icons.chevron_right_rounded,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
               ],
@@ -712,10 +724,10 @@ class _SmallChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+        color: theme.colorScheme.onSurface.withValues(alpha: 0.07),
       ),
       child: Text(
         label,

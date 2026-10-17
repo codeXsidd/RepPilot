@@ -23,7 +23,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   static const _pages = [
     _PageData(
-      icon: Icons.fitness_center,
+      icon: Icons.fitness_center_rounded,
       title: 'Welcome to RepPilot',
       subtitle: 'Train smart. Track every rep. Grow stronger.',
       description:
@@ -31,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           'internet required. Your data stays on your device.',
     ),
     _PageData(
-      icon: Icons.calendar_month,
+      icon: Icons.calendar_month_rounded,
       title: 'Plan Your Workouts',
       subtitle: 'Build custom routines',
       description:
@@ -39,7 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           'reps, and schedule them across your week.',
     ),
     _PageData(
-      icon: Icons.trending_up,
+      icon: Icons.trending_up_rounded,
       title: 'Track Your Progress',
       subtitle: 'Progressive overload made simple',
       description:
@@ -48,7 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           'explanations for every recommendation.',
     ),
     _PageData(
-      icon: Icons.restaurant,
+      icon: Icons.restaurant_rounded,
       title: 'Fuel Your Gains',
       subtitle: 'Nutrition and body tracking',
       description:
@@ -94,10 +94,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          page.icon,
-                          size: 80,
-                          color: theme.colorScheme.primary,
+                        Container(
+                          width: 96,
+                          height: 96,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.12,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            page.icon,
+                            size: 48,
+                            color: theme.colorScheme.primary,
+                          ),
                         ),
                         const SizedBox(height: 32),
                         Text(

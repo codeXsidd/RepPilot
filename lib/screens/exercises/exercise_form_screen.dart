@@ -120,7 +120,7 @@ class _ExerciseFormScreenState extends State<ExerciseFormScreen> {
         actions: [
           if (_isEdit)
             IconButton(
-              icon: const Icon(Icons.tune),
+              icon: const Icon(Icons.tune_rounded),
               tooltip: 'Overload Settings',
               onPressed: () {
                 Navigator.push<void>(
@@ -136,7 +136,7 @@ class _ExerciseFormScreenState extends State<ExerciseFormScreen> {
             ),
           if (!_readOnly)
             IconButton(
-              icon: const Icon(Icons.check),
+              icon: const Icon(Icons.check_rounded),
               tooltip: 'Save',
               onPressed: _saving ? null : _save,
             ),

@@ -72,7 +72,7 @@ class _DietScreenState extends State<DietScreen> {
                   const SizedBox(height: 16),
                   const SectionHeader(title: 'DAILY SUMMARY'),
                   _MacroRow(
-                    icon: Icons.local_fire_department_outlined,
+                    icon: Icons.local_fire_department_rounded,
                     label: 'Calories',
                     value: _calories > 0
                         ? '${_calories.toStringAsFixed(0)} kcal'
@@ -80,7 +80,7 @@ class _DietScreenState extends State<DietScreen> {
                   ),
                   const SizedBox(height: 8),
                   _MacroRow(
-                    icon: Icons.egg_outlined,
+                    icon: Icons.egg_rounded,
                     label: 'Protein',
                     value: _protein > 0
                         ? '${_protein.toStringAsFixed(0)}g'
@@ -88,27 +88,27 @@ class _DietScreenState extends State<DietScreen> {
                   ),
                   const SizedBox(height: 8),
                   _MacroRow(
-                    icon: Icons.grain,
+                    icon: Icons.grain_rounded,
                     label: 'Carbs',
                     value: _carbs > 0 ? '${_carbs.toStringAsFixed(0)}g' : '--',
                   ),
                   const SizedBox(height: 8),
                   _MacroRow(
-                    icon: Icons.opacity,
+                    icon: Icons.opacity_rounded,
                     label: 'Fat',
                     value: _fat > 0 ? '${_fat.toStringAsFixed(0)}g' : '--',
                   ),
                   const SizedBox(height: 16),
                   const SectionHeader(title: 'WATER INTAKE'),
                   _MacroRow(
-                    icon: Icons.water_drop_outlined,
+                    icon: Icons.water_drop_rounded,
                     label: 'Water',
                     value: _waterMl > 0 ? '$_waterMl ml' : '--',
                   ),
                   const SizedBox(height: 24),
                   if (!_hasData)
                     const EmptyState(
-                      icon: Icons.restaurant_outlined,
+                      icon: Icons.restaurant_rounded,
                       title: 'No Meals Logged Today',
                       description:
                           'Track your meals, calories, protein, and water intake. '

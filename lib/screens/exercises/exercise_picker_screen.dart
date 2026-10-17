@@ -120,7 +120,7 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
               child: Badge(
                 label: Text('${_selectedIds.length}'),
                 child: IconButton(
-                  icon: const Icon(Icons.check),
+                  icon: const Icon(Icons.check_rounded),
                   tooltip: 'Done',
                   onPressed: _done,
                 ),
@@ -128,7 +128,7 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
             )
           else
             IconButton(
-              icon: const Icon(Icons.check),
+              icon: const Icon(Icons.check_rounded),
               tooltip: 'Done',
               onPressed: _done,
             ),
@@ -142,10 +142,10 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search exercises...',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search_rounded),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(Icons.clear_rounded),
                         onPressed: () {
                           _searchController.clear();
                           _onSearchChanged('');
@@ -166,7 +166,7 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
-                    avatar: const Icon(Icons.history, size: 16),
+                    avatar: const Icon(Icons.history_rounded, size: 16),
                     label: const Text('Recent'),
                     selected: _specialFilter == 'recent',
                     onSelected: (_) => _onSpecialFilterSelected('recent'),
@@ -175,7 +175,7 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
-                    avatar: const Icon(Icons.star, size: 16),
+                    avatar: const Icon(Icons.star_rounded, size: 16),
                     label: const Text('Favorites'),
                     selected: _specialFilter == 'favorites',
                     onSelected: (_) => _onSpecialFilterSelected('favorites'),
@@ -218,10 +218,10 @@ class _ExercisePickerScreenState extends State<ExercisePickerScreen> {
                 : _exercises.isEmpty
                 ? EmptyState(
                     icon: _specialFilter == 'recent'
-                        ? Icons.history
+                        ? Icons.history_rounded
                         : _specialFilter == 'favorites'
-                        ? Icons.star_border
-                        : Icons.search_off,
+                        ? Icons.star_border_rounded
+                        : Icons.search_off_rounded,
                     title: _specialFilter == 'recent'
                         ? 'No Recent Exercises'
                         : _specialFilter == 'favorites'

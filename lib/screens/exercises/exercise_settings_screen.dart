@@ -117,7 +117,7 @@ class _ExerciseSettingsScreenState extends State<ExerciseSettingsScreen> {
         title: const Text('Overload Settings'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.check),
+            icon: const Icon(Icons.check_rounded),
             tooltip: 'Save',
             onPressed: _saving || _loading ? null : _save,
           ),

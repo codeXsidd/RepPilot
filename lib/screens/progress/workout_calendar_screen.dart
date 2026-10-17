@@ -128,7 +128,7 @@ class _WorkoutCalendarScreenState extends State<WorkoutCalendarScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.chevron_left),
+                  icon: const Icon(Icons.chevron_left_rounded),
                   onPressed: _goToPreviousMonth,
                   tooltip: 'Previous month',
                 ),
@@ -150,7 +150,7 @@ class _WorkoutCalendarScreenState extends State<WorkoutCalendarScreen> {
                   ],
                 ),
                 IconButton(
-                  icon: const Icon(Icons.chevron_right),
+                  icon: const Icon(Icons.chevron_right_rounded),
                   onPressed: _goToNextMonth,
                   tooltip: 'Next month',
                 ),
@@ -201,7 +201,7 @@ class _WorkoutCalendarScreenState extends State<WorkoutCalendarScreen> {
     final daySessions = _sessionsByDay[_selectedDay!.day];
     if (daySessions == null || daySessions.isEmpty) {
       return const EmptyState(
-        icon: Icons.event_busy_outlined,
+        icon: Icons.event_busy_rounded,
         title: 'Rest Day',
         description: 'No workouts recorded on this day.',
       );
@@ -283,7 +283,7 @@ class _WorkoutCalendarScreenState extends State<WorkoutCalendarScreen> {
                   ),
                   const SizedBox(width: 4),
                   Icon(
-                    Icons.chevron_right,
+                    Icons.chevron_right_rounded,
                     color: theme.colorScheme.outlineVariant,
                   ),
                 ],

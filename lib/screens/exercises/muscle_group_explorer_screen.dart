@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../core/data/default_exercises.dart';
 import '../../models/exercise.dart';
 import '../../repositories/exercise_repository.dart';
+import '../../theme/app_theme.dart';
 import 'exercise_detail_screen.dart';
 
 const _muscleGroupSvgMap = <String, String>{
@@ -61,7 +62,7 @@ class _MuscleGroupExplorerScreenState extends State<MuscleGroupExplorerScreen> {
         actions: [
           if (_selectedGroup != null)
             IconButton(
-              icon: const Icon(Icons.grid_view),
+              icon: const Icon(Icons.grid_view_rounded),
               tooltip: 'Show all groups',
               onPressed: () => setState(() {
                 _selectedGroup = null;
@@ -77,11 +78,11 @@ class _MuscleGroupExplorerScreenState extends State<MuscleGroupExplorerScreen> {
   Widget _buildGrid(ThemeData theme) {
     final groups = exerciseCategories;
     return GridView.builder(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppSpacing.pagePadding),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
         childAspectRatio: 0.85,
       ),
       itemCount: groups.length,
@@ -203,12 +204,12 @@ class _MuscleCard extends StatelessWidget {
                     ? SvgPicture.asset(
                         svgPath!,
                         colorFilter: ColorFilter.mode(
-                          theme.colorScheme.primary.withAlpha(180),
+                          theme.colorScheme.primary.withValues(alpha: 0.7),
                           BlendMode.srcIn,
                         ),
                       )
                     : Icon(
-                        Icons.fitness_center,
+                        Icons.fitness_center_rounded,
                         size: 40,
                         color: theme.colorScheme.primary,
                       ),
@@ -241,8 +242,8 @@ class _ExerciseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final diffColor = switch (exercise.difficulty) {
-      'beginner' => Colors.green,
-      'advanced' => Colors.orange,
+      'beginner' => AppColors.success,
+      'advanced' => AppColors.warning,
       _ => theme.colorScheme.primary,
     };
 
@@ -275,7 +276,7 @@ class _ExerciseTile extends StatelessWidget {
         ],
       ),
       trailing: exercise.isFavorite
-          ? const Icon(Icons.star, size: 18, color: Colors.amber)
+          ? Icon(Icons.star_rounded, size: 18, color: AppColors.warning)
           : null,
       onTap: onTap,
     );

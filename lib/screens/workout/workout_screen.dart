@@ -9,6 +9,7 @@ import '../../repositories/routine_repository.dart';
 import '../../repositories/workout_session_repository.dart';
 import '../../repositories/workout_set_repository.dart';
 import '../../services/active_workout_service.dart';
+import '../../theme/app_theme.dart';
 import '../../widgets/empty_state.dart';
 import '../../widgets/section_header.dart';
 import '../exercises/exercise_list_screen.dart';
@@ -178,6 +179,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             child: const Text('Cancel'),
           ),
           FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+            ),
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('Delete'),
           ),
@@ -212,7 +216,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.hotel),
+              leading: const Icon(Icons.hotel_rounded),
               title: const Text('Rest Day (clear)'),
               onTap: () async {
                 final current = _schedule[dayOfWeek];
@@ -228,11 +232,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             const Divider(height: 1),
             ...routines.map(
               (r) => ListTile(
-                leading: const Icon(Icons.fitness_center),
+                leading: const Icon(Icons.fitness_center_rounded),
                 title: Text(r.name),
                 trailing: r.dayOfWeek == dayOfWeek
                     ? Icon(
-                        Icons.check_circle,
+                        Icons.check_circle_rounded,
                         color: Theme.of(ctx).colorScheme.primary,
                       )
                     : null,
@@ -265,7 +269,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         title: const Text('Workouts'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.calendar_month),
+            icon: const Icon(Icons.calendar_month_rounded),
             tooltip: 'My Weekly Workouts',
             onPressed: () async {
               await Navigator.push<void>(
@@ -276,12 +280,12 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.play_arrow),
+            icon: const Icon(Icons.play_arrow_rounded),
             tooltip: 'Quick Start',
             onPressed: _startStandaloneWorkout,
           ),
           IconButton(
-            icon: const Icon(Icons.history),
+            icon: const Icon(Icons.history_rounded),
             tooltip: 'Workout History',
             onPressed: () async {
               await Navigator.push<void>(
@@ -291,7 +295,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.library_books),
+            icon: const Icon(Icons.library_books_rounded),
             tooltip: 'Exercise Library',
             onPressed: () async {
               await Navigator.push<void>(
@@ -351,7 +355,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         heroTag: 'workout_fab',
         onPressed: () => _navigateToForm(),
         tooltip: 'New Routine',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_rounded),
       ),
     );
   }
@@ -412,7 +416,7 @@ class _DayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final cs = theme.colorScheme;
 
     return GestureDetector(
       onTap: onTap,
@@ -420,14 +424,12 @@ class _DayCard extends StatelessWidget {
         width: 96,
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
             side: isToday
-                ? BorderSide(color: colorScheme.primary, width: 2)
-                : BorderSide.none,
+                ? BorderSide(color: cs.primary, width: 1.5)
+                : BorderSide(color: cs.outline.withValues(alpha: 0.15)),
           ),
-          color: isToday
-              ? colorScheme.primaryContainer
-              : colorScheme.surfaceContainerHighest,
+          color: isToday ? cs.primary.withValues(alpha: 0.1) : null,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -437,9 +439,7 @@ class _DayCard extends StatelessWidget {
                   dayName,
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: isToday
-                        ? colorScheme.onPrimaryContainer
-                        : colorScheme.onSurfaceVariant,
+                    color: isToday ? cs.primary : cs.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -447,10 +447,9 @@ class _DayCard extends StatelessWidget {
                   routineLabel,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: hasRoutine
-                        ? (isToday
-                              ? colorScheme.onPrimaryContainer
-                              : colorScheme.onSurface)
-                        : colorScheme.outlineVariant,
+                        ? (isToday ? cs.primary : cs.onSurface)
+                        : cs.onSurfaceVariant.withValues(alpha: 0.5),
+                    fontWeight: hasRoutine ? FontWeight.w500 : null,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
@@ -498,10 +497,10 @@ class _RoutineCard extends StatelessWidget {
     final dayLabel = _dayLabel;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Card(
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -514,16 +513,16 @@ class _RoutineCard extends StatelessWidget {
                       Text(
                         routine.name,
                         style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Row(
                         children: [
                           if (dayLabel != null) ...[
                             Icon(
-                              Icons.calendar_today,
-                              size: 14,
+                              Icons.calendar_today_rounded,
+                              size: 13,
                               color: theme.colorScheme.primary,
                             ),
                             const SizedBox(width: 4),
@@ -531,13 +530,14 @@ class _RoutineCard extends StatelessWidget {
                               dayLabel,
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.primary,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             const SizedBox(width: 12),
                           ],
                           Icon(
-                            Icons.fitness_center,
-                            size: 14,
+                            Icons.fitness_center_rounded,
+                            size: 13,
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 4),
@@ -553,9 +553,19 @@ class _RoutineCard extends StatelessWidget {
                   ),
                 ),
                 if (exerciseCount > 0) ...[
-                  FilledButton.tonal(
-                    onPressed: onStart,
-                    child: const Text('Start'),
+                  SizedBox(
+                    height: 34,
+                    child: FilledButton(
+                      onPressed: onStart,
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        minimumSize: Size.zero,
+                        textStyle: theme.textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      child: const Text('Start'),
+                    ),
                   ),
                   const SizedBox(width: 4),
                 ],

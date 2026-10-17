@@ -77,7 +77,7 @@ void main() {
       await tester.tap(findNavLabel('Workout'));
       await tester.pumpAndSettle();
 
-      final calendarBtn = find.byIcon(Icons.calendar_month);
+      final calendarBtn = find.byIcon(Icons.calendar_month_rounded);
       expect(calendarBtn, findsOneWidget);
       await tester.tap(calendarBtn);
       await tester.pumpAndSettle();
@@ -158,7 +158,7 @@ void main() {
       await tester.tap(findNavLabel('Workout'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.calendar_month));
+      await tester.tap(find.byIcon(Icons.calendar_month_rounded));
       await tester.pumpAndSettle();
 
       expect(find.text('Rest Day'), findsWidgets);
@@ -172,15 +172,15 @@ void main() {
       await tester.tap(findNavLabel('Workout'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.calendar_month));
+      await tester.tap(find.byIcon(Icons.calendar_month_rounded));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.chevron_left));
+      await tester.tap(find.byIcon(Icons.chevron_left_rounded));
       await tester.pumpAndSettle();
 
       expect(find.text('Tap for this week'), findsOneWidget);
 
-      await tester.tap(find.byIcon(Icons.chevron_right));
+      await tester.tap(find.byIcon(Icons.chevron_right_rounded));
       await tester.pumpAndSettle();
     });
   });

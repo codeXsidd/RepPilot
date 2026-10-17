@@ -316,7 +316,7 @@ class _RoutineFormScreenState extends State<RoutineFormScreen> {
         title: Text(_isEdit ? 'Edit Routine' : 'New Routine'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.check),
+            icon: const Icon(Icons.check_rounded),
             tooltip: 'Save',
             onPressed: _loading ? null : _save,
           ),
@@ -401,7 +401,7 @@ class _RoutineFormScreenState extends State<RoutineFormScreen> {
                   const SizedBox(height: 12),
                   OutlinedButton.icon(
                     onPressed: _addExercises,
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Icons.add_rounded),
                     label: const Text('Add Exercises'),
                   ),
                   if (_loading) ...[
@@ -429,7 +429,8 @@ class _SectionLabel extends StatelessWidget {
         style: theme.textTheme.titleSmall?.copyWith(
           fontWeight: FontWeight.w600,
           color: theme.colorScheme.onSurfaceVariant,
-          letterSpacing: 0.5,
+          letterSpacing: 1.0,
+          fontSize: 11,
         ),
       ),
     );
@@ -474,7 +475,10 @@ class _ExerciseTile extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 16),
         color: theme.colorScheme.errorContainer,
-        child: Icon(Icons.delete, color: theme.colorScheme.onErrorContainer),
+        child: Icon(
+          Icons.delete_rounded,
+          color: theme.colorScheme.onErrorContainer,
+        ),
       ),
       child: Card(
         margin: const EdgeInsets.only(bottom: 8),
@@ -497,7 +501,7 @@ class _ExerciseTile extends StatelessWidget {
           ),
           trailing: ReorderableDragStartListener(
             index: 0,
-            child: const Icon(Icons.drag_handle),
+            child: const Icon(Icons.drag_handle_rounded),
           ),
           onTap: onTap,
         ),

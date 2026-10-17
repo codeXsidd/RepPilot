@@ -67,7 +67,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.info_outline,
+                      Icons.info_rounded,
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 12),
@@ -101,7 +101,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                 ),
                 if (_prefs.workoutEnabled)
                   ListTile(
-                    leading: const Icon(Icons.schedule),
+                    leading: const Icon(Icons.schedule_rounded),
                     title: const Text('Reminder time'),
                     trailing: Text(
                       _formatTime(_prefs.workoutHour, _prefs.workoutMinute),
@@ -142,7 +142,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                 ),
                 if (_prefs.weightEnabled)
                   ListTile(
-                    leading: const Icon(Icons.schedule),
+                    leading: const Icon(Icons.schedule_rounded),
                     title: const Text('Reminder time'),
                     trailing: Text(
                       _formatTime(_prefs.weightHour, _prefs.weightMinute),
@@ -183,7 +183,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                 ),
                 if (_prefs.waterEnabled) ...[
                   ListTile(
-                    leading: const Icon(Icons.repeat),
+                    leading: const Icon(Icons.repeat_rounded),
                     title: const Text('Interval'),
                     trailing: DropdownButton<int>(
                       value: _prefs.waterIntervalHours,
@@ -211,7 +211,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.schedule),
+                    leading: const Icon(Icons.schedule_rounded),
                     title: const Text('Active hours'),
                     trailing: Text(
                       '${_prefs.waterStartHour}:00 — ${_prefs.waterEndHour}:00',

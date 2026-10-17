@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../core/data/default_exercises.dart';
 import '../../models/exercise.dart';
 import '../../repositories/exercise_repository.dart';
+import '../../theme/app_theme.dart';
 import '../../widgets/empty_state.dart';
 import 'exercise_detail_screen.dart';
 import 'exercise_form_screen.dart';
@@ -123,12 +124,14 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Exercise Library'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.accessibility_new),
+            icon: const Icon(Icons.accessibility_new_rounded),
             tooltip: 'Muscle Groups',
             onPressed: () => Navigator.push<void>(
               context,
@@ -141,7 +144,7 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
             isLabelVisible: _activeFilterCount > 0,
             label: Text('$_activeFilterCount'),
             child: IconButton(
-              icon: const Icon(Icons.filter_list),
+              icon: const Icon(Icons.filter_list_rounded),
               tooltip: 'Filters',
               onPressed: _showFilterSheet,
             ),
@@ -156,10 +159,10 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search exercises...',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search_rounded),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(Icons.clear_rounded),
                         onPressed: () {
                           _searchController.clear();
                           _onSearchChanged('');
@@ -183,8 +186,8 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
               children: [
                 Text(
                   '${_exercises.length} exercise${_exercises.length == 1 ? '' : 's'}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const Spacer(),
@@ -199,7 +202,7 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
                       });
                       _loadExercises();
                     },
-                    icon: const Icon(Icons.clear, size: 16),
+                    icon: const Icon(Icons.clear_rounded, size: 16),
                     label: const Text('Clear Filters'),
                   ),
               ],
@@ -240,7 +243,7 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToForm(),
         tooltip: 'New Exercise',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_rounded),
       ),
     );
   }
@@ -314,60 +317,50 @@ class _ExerciseListItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 6),
       child: ListTile(
         title: Text(
           exercise.name,
           style: theme.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Text(
           [
             _formatLabel(exercise.category),
             if (exercise.muscleGroup.isNotEmpty) exercise.muscleGroup,
-            if (exercise.equipment.isNotEmpty)
-              _equipmentLabel(exercise.equipment),
-          ].join(' • '),
+            if (exercise.equipment.isNotEmpty) _formatLabel(exercise.equipment),
+          ].join(' · '),
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        leading: _difficultyDot(theme),
+        leading: _DifficultyIndicator(difficulty: exercise.difficulty),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (exercise.isFavorite)
-              const Icon(Icons.star, size: 16, color: Colors.amber),
+              Icon(Icons.star_rounded, size: 16, color: AppColors.warning),
             if (exercise.isCustom)
               Padding(
                 padding: const EdgeInsets.only(left: 4),
                 child: Icon(
-                  Icons.person,
+                  Icons.person_rounded,
                   size: 16,
                   color: theme.colorScheme.primary,
                 ),
               ),
             const SizedBox(width: 4),
-            const Icon(Icons.chevron_right, size: 20),
+            Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ],
         ),
         onTap: onTap,
         onLongPress: onEdit,
       ),
-    );
-  }
-
-  Widget _difficultyDot(ThemeData theme) {
-    final color = switch (exercise.difficulty) {
-      'beginner' => Colors.green,
-      'advanced' => Colors.orange,
-      _ => theme.colorScheme.primary,
-    };
-    return Container(
-      width: 10,
-      height: 10,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
   }
 
@@ -379,8 +372,25 @@ class _ExerciseListItem extends StatelessWidget {
         .map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}')
         .join(' ');
   }
+}
 
-  static String _equipmentLabel(String equip) => _formatLabel(equip);
+class _DifficultyIndicator extends StatelessWidget {
+  final String difficulty;
+  const _DifficultyIndicator({required this.difficulty});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = switch (difficulty) {
+      'beginner' => AppColors.success,
+      'advanced' => AppColors.warning,
+      _ => Theme.of(context).colorScheme.primary,
+    };
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
 }
 
 class _FilterSheet extends StatefulWidget {
@@ -434,13 +444,19 @@ class _FilterSheetState extends State<_FilterSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Filters', style: theme.textTheme.titleMedium),
+            Text(
+              'Filters',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             const SizedBox(height: 16),
             Text(
               'DIFFICULTY',
               style: theme.textTheme.labelMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
-                letterSpacing: 0.5,
+                letterSpacing: 1.0,
+                fontSize: 11,
               ),
             ),
             const SizedBox(height: 8),
@@ -462,7 +478,8 @@ class _FilterSheetState extends State<_FilterSheet> {
               'EQUIPMENT',
               style: theme.textTheme.labelMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
-                letterSpacing: 0.5,
+                letterSpacing: 1.0,
+                fontSize: 11,
               ),
             ),
             const SizedBox(height: 8),

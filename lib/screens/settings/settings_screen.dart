@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/training_level_service.dart';
+import '../../theme/app_theme.dart';
 import '../../theme/theme_controller.dart';
 import '../../widgets/section_header.dart';
 import 'backup_restore_screen.dart';
@@ -28,21 +29,29 @@ class SettingsScreen extends StatelessWidget {
               children: [
                 _ThemeOption(
                   label: 'System Default',
-                  icon: Icons.brightness_auto,
+                  icon: Icons.brightness_auto_rounded,
                   selected: themeCtrl.themeMode == ThemeMode.system,
                   onTap: () => themeCtrl.setThemeMode(ThemeMode.system),
                 ),
-                const Divider(height: 1, indent: 56),
+                Divider(
+                  height: 1,
+                  indent: 56,
+                  color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                ),
                 _ThemeOption(
                   label: 'Light',
-                  icon: Icons.light_mode,
+                  icon: Icons.light_mode_rounded,
                   selected: themeCtrl.themeMode == ThemeMode.light,
                   onTap: () => themeCtrl.setThemeMode(ThemeMode.light),
                 ),
-                const Divider(height: 1, indent: 56),
+                Divider(
+                  height: 1,
+                  indent: 56,
+                  color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                ),
                 _ThemeOption(
                   label: 'Dark',
-                  icon: Icons.dark_mode,
+                  icon: Icons.dark_mode_rounded,
                   selected: themeCtrl.themeMode == ThemeMode.dark,
                   onTap: () => themeCtrl.setThemeMode(ThemeMode.dark),
                 ),
@@ -58,26 +67,42 @@ class SettingsScreen extends StatelessWidget {
                   Column(
                     children: [
                       if (level != TrainingLevel.values.first)
-                        const Divider(height: 1, indent: 56),
+                        Divider(
+                          height: 1,
+                          indent: 56,
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.1,
+                          ),
+                        ),
                       ListTile(
                         leading: Icon(
                           switch (level) {
-                            TrainingLevel.beginner => Icons.eco,
-                            TrainingLevel.intermediate => Icons.fitness_center,
-                            TrainingLevel.advanced => Icons.bolt,
+                            TrainingLevel.beginner => Icons.eco_rounded,
+                            TrainingLevel.intermediate =>
+                              Icons.fitness_center_rounded,
+                            TrainingLevel.advanced => Icons.bolt_rounded,
                           },
                           color: levelCtrl.level == level
                               ? theme.colorScheme.primary
-                              : null,
+                              : theme.colorScheme.onSurfaceVariant,
                         ),
-                        title: Text(level.label),
+                        title: Text(
+                          level.label,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: levelCtrl.level == level
+                                ? FontWeight.w600
+                                : null,
+                          ),
+                        ),
                         subtitle: Text(
                           level.description,
-                          style: theme.textTheme.bodySmall,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
                         ),
                         trailing: levelCtrl.level == level
                             ? Icon(
-                                Icons.check_circle,
+                                Icons.check_circle_rounded,
                                 color: theme.colorScheme.primary,
                               )
                             : null,
@@ -92,10 +117,16 @@ class SettingsScreen extends StatelessWidget {
           const SectionHeader(title: 'NOTIFICATIONS'),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.notifications_outlined),
+              leading: Icon(
+                Icons.notifications_outlined,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               title: const Text('Reminders'),
               subtitle: const Text('Workout, weight and hydration reminders'),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: Icon(
+                Icons.chevron_right_rounded,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               onTap: () => Navigator.push<void>(
                 context,
                 MaterialPageRoute(
@@ -110,10 +141,16 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  leading: const Icon(Icons.straighten),
+                  leading: Icon(
+                    Icons.straighten_rounded,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                   title: const Text('Units'),
                   subtitle: const Text('Weight display: kg or lb'),
-                  trailing: const Icon(Icons.chevron_right),
+                  trailing: Icon(
+                    Icons.chevron_right_rounded,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                   onTap: () => Navigator.push<void>(
                     context,
                     MaterialPageRoute(
@@ -121,12 +158,22 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Divider(height: 1, indent: 56),
+                Divider(
+                  height: 1,
+                  indent: 56,
+                  color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                ),
                 ListTile(
-                  leading: const Icon(Icons.backup_outlined),
+                  leading: Icon(
+                    Icons.backup_outlined,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                   title: const Text('Backup & Restore'),
                   subtitle: const Text('Export or import your data'),
-                  trailing: const Icon(Icons.chevron_right),
+                  trailing: Icon(
+                    Icons.chevron_right_rounded,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                   onTap: () => Navigator.push<void>(
                     context,
                     MaterialPageRoute(
@@ -147,38 +194,62 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        Icons.fitness_center,
-                        color: theme.colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'RepPilot',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              theme.colorScheme.primary,
+                              theme.colorScheme.primary.withValues(alpha: 0.7),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusSm,
+                          ),
                         ),
+                        child: const Icon(
+                          Icons.fitness_center_rounded,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'RepPilot',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            'Version 1.2.0',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Version 1.0.0',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 14),
                   Text(
                     'A free, offline-first fitness app. Your data stays on your '
                     'device — no accounts, no cloud, no ads.',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
+                      height: 1.5,
                     ),
                   ),
                 ],
               ),
             ),
           ),
+          const SizedBox(height: 24),
         ],
       ),
     );
@@ -202,10 +273,20 @@ class _ThemeOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListTile(
-      leading: Icon(icon, color: selected ? theme.colorScheme.primary : null),
-      title: Text(label),
+      leading: Icon(
+        icon,
+        color: selected
+            ? theme.colorScheme.primary
+            : theme.colorScheme.onSurfaceVariant,
+      ),
+      title: Text(
+        label,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          fontWeight: selected ? FontWeight.w600 : null,
+        ),
+      ),
       trailing: selected
-          ? Icon(Icons.check_circle, color: theme.colorScheme.primary)
+          ? Icon(Icons.check_circle_rounded, color: theme.colorScheme.primary)
           : null,
       onTap: onTap,
     );

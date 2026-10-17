@@ -89,7 +89,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
               controller: _searchCtrl,
               decoration: InputDecoration(
                 hintText: 'Search foods...',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search_rounded),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -99,7 +99,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                 ),
                 suffixIcon: _searchCtrl.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(Icons.clear_rounded),
                         onPressed: () {
                           _searchCtrl.clear();
                           _loadFoods();
@@ -175,8 +175,8 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                         trailing: IconButton(
                           icon: Icon(
                             food.isFavorite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_border_rounded,
                             color: food.isFavorite
                                 ? theme.colorScheme.error
                                 : null,
@@ -200,7 +200,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
           if (result == true) _loadFoods();
         },
         tooltip: 'New Food',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_rounded),
       ),
     );
   }

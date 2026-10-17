@@ -144,7 +144,7 @@ class _MealTemplateScreenState extends State<MealTemplateScreen> {
           ? const Center(child: CircularProgressIndicator())
           : _templates.isEmpty
           ? const EmptyState(
-              icon: Icons.book_outlined,
+              icon: Icons.book_rounded,
               title: 'No Templates',
               description:
                   'Create meal templates to quickly log your regular meals.',
@@ -215,7 +215,7 @@ class _MealTemplateScreenState extends State<MealTemplateScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: _createTemplate,
         tooltip: 'New Template',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_rounded),
       ),
     );
   }
@@ -358,7 +358,7 @@ class _TemplateFormScreenState extends State<_TemplateFormScreen> {
               ),
               TextButton.icon(
                 onPressed: _addFood,
-                icon: const Icon(Icons.add, size: 18),
+                icon: const Icon(Icons.add_rounded, size: 18),
                 label: const Text('Add'),
               ),
             ],
@@ -402,7 +402,7 @@ class _TemplateFormScreenState extends State<_TemplateFormScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, size: 18),
+                    icon: const Icon(Icons.close_rounded, size: 18),
                     onPressed: () => setState(() => _items.removeAt(i)),
                   ),
                 ],

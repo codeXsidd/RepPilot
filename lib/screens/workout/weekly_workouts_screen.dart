@@ -7,6 +7,7 @@ import '../../models/routine.dart';
 import '../../models/workout_session.dart';
 import '../../repositories/routine_repository.dart';
 import '../../repositories/workout_session_repository.dart';
+import '../../theme/app_theme.dart';
 import 'workout_day_detail_screen.dart';
 
 const _dayShort = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -111,7 +112,7 @@ class _WeeklyWorkoutsScreenState extends State<WeeklyWorkoutsScreen> {
                     children: [
                       IconButton(
                         onPressed: _previousWeek,
-                        icon: const Icon(Icons.chevron_left),
+                        icon: const Icon(Icons.chevron_left_rounded),
                         tooltip: 'Previous week',
                       ),
                       GestureDetector(
@@ -136,7 +137,7 @@ class _WeeklyWorkoutsScreenState extends State<WeeklyWorkoutsScreen> {
                       ),
                       IconButton(
                         onPressed: _nextWeek,
-                        icon: const Icon(Icons.chevron_right),
+                        icon: const Icon(Icons.chevron_right_rounded),
                         tooltip: 'Next week',
                       ),
                     ],
@@ -167,13 +168,15 @@ class _WeeklyWorkoutsScreenState extends State<WeeklyWorkoutsScreen> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           side: isToday
-              ? BorderSide(color: theme.colorScheme.primary, width: 2)
-              : BorderSide.none,
+              ? BorderSide(color: theme.colorScheme.primary, width: 1.5)
+              : BorderSide(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                ),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           onTap: routines.isNotEmpty
               ? () async {
                   await Navigator.push<void>(
@@ -227,7 +230,9 @@ class _WeeklyWorkoutsScreenState extends State<WeeklyWorkoutsScreen> {
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: routines.isEmpty
-                              ? theme.colorScheme.outlineVariant
+                              ? theme.colorScheme.onSurfaceVariant.withValues(
+                                  alpha: 0.5,
+                                )
                               : null,
                         ),
                       ),
@@ -261,53 +266,59 @@ class _StatusBadge extends StatelessWidget {
     final theme = Theme.of(context);
     switch (status) {
       case _DayStatus.completed:
-        return Chip(
-          avatar: Icon(Icons.check_circle, size: 16, color: Colors.green[700]),
-          label: Text(
-            'Done',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: Colors.green[700],
-            ),
-          ),
-          backgroundColor: Colors.green.withValues(alpha: 0.1),
-          side: BorderSide.none,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-          padding: EdgeInsets.zero,
+        return _buildBadge(
+          context,
+          Icons.check_circle_rounded,
+          'Done',
+          AppColors.success,
         );
       case _DayStatus.inProgress:
-        return Chip(
-          avatar: Icon(Icons.play_circle, size: 16, color: Colors.orange[700]),
-          label: Text(
-            'In Progress',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: Colors.orange[700],
-            ),
-          ),
-          backgroundColor: Colors.orange.withValues(alpha: 0.1),
-          side: BorderSide.none,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-          padding: EdgeInsets.zero,
+        return _buildBadge(
+          context,
+          Icons.play_circle_rounded,
+          'In Progress',
+          AppColors.warning,
         );
       case _DayStatus.planned:
-        return Chip(
-          avatar: Icon(Icons.event, size: 16, color: theme.colorScheme.primary),
-          label: Text(
-            'Planned',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.primary,
-            ),
-          ),
-          backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
-          side: BorderSide.none,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-          padding: EdgeInsets.zero,
+        return _buildBadge(
+          context,
+          Icons.event_rounded,
+          'Planned',
+          theme.colorScheme.primary,
         );
       case _DayStatus.rest:
         return const SizedBox.shrink();
     }
+  }
+
+  Widget _buildBadge(
+    BuildContext context,
+    IconData icon,
+    String label,
+    Color color,
+  ) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -355,17 +366,17 @@ class _WeeklyProgress extends StatelessWidget {
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: theme.colorScheme.primary,
+                    fontFeatures: [const FontFeature.tabularFigures()],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             ClipRRect(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
                 value: planned > 0 ? completed / planned : 0,
-                minHeight: 10,
-                backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                minHeight: 8,
               ),
             ),
           ],

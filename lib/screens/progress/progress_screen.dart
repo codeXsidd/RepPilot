@@ -78,7 +78,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           : Row(
                               children: [
                                 Icon(
-                                  Icons.show_chart,
+                                  Icons.show_chart_rounded,
                                   color: theme.colorScheme.outlineVariant,
                                 ),
                                 const SizedBox(width: 12),
@@ -108,7 +108,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           : Row(
                               children: [
                                 Icon(
-                                  Icons.history,
+                                  Icons.history_rounded,
                                   color: theme.colorScheme.outlineVariant,
                                 ),
                                 const SizedBox(width: 12),
@@ -127,7 +127,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   if (!_hasData) ...[
                     const SizedBox(height: 24),
                     const EmptyState(
-                      icon: Icons.trending_up,
+                      icon: Icons.trending_up_rounded,
                       title: 'No Progress Data Yet',
                       description:
                           'Start logging workouts and body weight to track your '

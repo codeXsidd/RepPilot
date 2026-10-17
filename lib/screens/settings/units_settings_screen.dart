@@ -124,12 +124,12 @@ class _UnitOption extends StatelessWidget {
     final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
-        Icons.straighten,
+        Icons.straighten_rounded,
         color: selected ? theme.colorScheme.primary : null,
       ),
       title: Text(label),
       trailing: selected
-          ? Icon(Icons.check_circle, color: theme.colorScheme.primary)
+          ? Icon(Icons.check_circle_rounded, color: theme.colorScheme.primary)
           : null,
       onTap: onTap,
     );

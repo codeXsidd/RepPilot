@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants.dart';
+import '../../theme/app_theme.dart';
 import '../../models/workout_set.dart';
 import '../../repositories/user_profile_repository.dart';
 import '../../repositories/workout_session_repository.dart';
@@ -101,7 +102,7 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
           ? const Center(child: CircularProgressIndicator())
           : _records.isEmpty
           ? const EmptyState(
-              icon: Icons.history,
+              icon: Icons.history_rounded,
               title: 'No History',
               description: 'Complete workouts with this exercise to see your progression.',
             )
@@ -223,15 +224,15 @@ class _SummaryCard extends StatelessWidget {
                     label: 'Best Weight',
                     value:
                         '${displayWeight(allTimeMax, weightUnit).toStringAsFixed(1)} $unitLabel',
-                    icon: Icons.emoji_events,
-                    color: Colors.amber,
+                    icon: Icons.emoji_events_rounded,
+                    color: AppColors.warning,
                   ),
                 ),
                 Expanded(
                   child: _StatItem(
                     label: 'Best Reps',
                     value: '$allTimeMaxReps',
-                    icon: Icons.repeat,
+                    icon: Icons.repeat_rounded,
                     color: theme.colorScheme.primary,
                   ),
                 ),
@@ -244,7 +245,7 @@ class _SummaryCard extends StatelessWidget {
                   child: _StatItem(
                     label: 'Sessions',
                     value: '${records.length}',
-                    icon: Icons.calendar_today,
+                    icon: Icons.calendar_today_rounded,
                     color: theme.colorScheme.tertiary,
                   ),
                 ),
@@ -254,9 +255,11 @@ class _SummaryCard extends StatelessWidget {
                     value:
                         '${weightChange >= 0 ? '+' : ''}${displayWeight(weightChange, weightUnit).toStringAsFixed(1)} $unitLabel',
                     icon: weightChange >= 0
-                        ? Icons.trending_up
-                        : Icons.trending_down,
-                    color: weightChange >= 0 ? Colors.green : Colors.red,
+                        ? Icons.trending_up_rounded
+                        : Icons.trending_down_rounded,
+                    color: weightChange >= 0
+                        ? AppColors.success
+                        : AppColors.error,
                   ),
                 ),
               ],

@@ -169,7 +169,7 @@ class _BodyMeasurementFormState extends State<BodyMeasurementForm> {
               child: InputDecorator(
                 decoration: const InputDecoration(
                   labelText: 'Date',
-                  prefixIcon: Icon(Icons.calendar_today),
+                  prefixIcon: Icon(Icons.calendar_today_rounded),
                 ),
                 child: Text(DateFormat.yMMMd().format(_date)),
               ),
@@ -209,7 +209,7 @@ class _BodyMeasurementFormState extends State<BodyMeasurementForm> {
               controller: _notesController,
               decoration: const InputDecoration(
                 labelText: 'Notes (optional)',
-                prefixIcon: Icon(Icons.note_outlined),
+                prefixIcon: Icon(Icons.note_rounded),
               ),
               textCapitalization: TextCapitalization.sentences,
             ),
