@@ -32,9 +32,26 @@
 - Month navigation with workout count summary
 - Links to full session summary
 
+### Daily Workout Experience
+- My Weekly Workouts screen: Mon–Sun cards with status badges (rest, planned, in-progress, completed)
+- Week navigation (previous / next / current) with weekly progress bar
+- Workout day detail screen: exercise preview with muscle SVG illustrations, instructions, safety notes
+- Start / Resume / View Summary workflow depending on session status
+- Mark Incomplete with confirmation dialog (clears completion, preserves logged sets)
+- Today's Workout card on home dashboard showing current-day status
+- Database-level duplicate prevention: partial unique index on (routine_id, planned_date)
+- Transactional create-or-resume (`getOrCreateForRoutine`) and idempotent completion (`completeIfActive`)
+- Schema v8 migration: `planned_date` column on workout_sessions
+
 ### Progress Enhancements
 - Calendar button on Progress screen for quick access to workout calendar
 - Exercise history accessible from exercise detail screen
+
+### Technical
+- Database schema v8 with 8 forward-only migrations
+- 673 automated tests (unit, widget, repository, service, integration)
+- 8 on-device integration tests (emulator-verified)
+- Fixed duplicate Hero tag crash when switching between Workout and Diet tabs
 
 ## v1.1.0 (2026-10-16)
 

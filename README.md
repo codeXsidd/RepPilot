@@ -50,7 +50,7 @@ flutter run --release
 ## Testing
 
 ```bash
-# Run all tests (642+ tests)
+# Run all tests (673+ tests)
 flutter test
 
 # Run with verbose output
@@ -111,7 +111,7 @@ lib/
 | Layer | Technology |
 |---|---|
 | State management | Provider + ChangeNotifier |
-| Local storage | sqflite (SQLite) — 16 tables, schema v7 |
+| Local storage | sqflite (SQLite) — 16 tables, schema v8 |
 | Settings | shared_preferences |
 | Charts | fl_chart |
 | File I/O | file_picker 13.x |
