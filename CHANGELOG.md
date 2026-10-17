@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.3.0 (2026-10-17)
+
+### Premium UI/UX Redesign
+- **Centralized design tokens**: New `AppColors` and `AppSpacing` classes providing consistent color palette (blue accent), spacing, and border radii across all screens
+- **Material 3 refinement**: Cohesive dark and light themes built on `ColorScheme` with blue primary accent (`#448AFF`), tinted surfaces, and subtle card borders
+- **Rounded icons**: All icons updated to `_rounded` variants for a softer, modern look across 37+ screens
+- **Tabular figures**: Numeric values use `FontFeature.tabularFigures()` for proper alignment in timers, stats, and weight displays
+- **Home dashboard redesign**: Floating SliverAppBar with gradient icon, today's workout card with status-colored tint, stats row, daily overview, and motivational quote card
+- **Live workout screen**: Redesigned timer display, bolder exercise names, rounded input fields, completed-set highlighting with primary color tint, and improved bottom bar
+- **Workout screens**: Day cards with primary tint for current day, unified badge styling, progress bars with tabular figures
+- **Exercise screens**: Difficulty indicators with color-coded dots, category chips, improved filter sheet, alpha-based chip coloring on detail screen
+- **Progress dashboard**: Weight stats with headline typography, mini stat cards, tinted icon containers, trophy icons for personal records
+- **Nutrition dashboard**: Uppercase section headers, macro chips with branded colors, blue-tinted water intake buttons
+- **Settings**: Gradient blue app icon, redesigned theme and training level selectors with blue check indicators
+- **Onboarding**: Circular tinted containers behind page icons
+- **Empty states**: Circular tinted container behind icons for visual consistency
+- **Section headers**: Uppercase with letter spacing and consistent typography throughout
+- **Navigation bar**: Top border accent, rounded tab icons, blue pill indicator for selected tab
+
+### Verified
+- 673 unit tests passing
+- 8 on-device integration tests passing (emulator API 37)
+- Dark and light themes verified on Android emulator
+- Zero `flutter analyze` issues
+- Production signing intact
+
 ## v1.2.0 (2026-10-16)
 
 ### Exercise Library Expansion

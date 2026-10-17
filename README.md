@@ -32,7 +32,7 @@ RepPilot is a free, offline-first Android fitness app. No accounts, no subscript
 ## Setup
 
 ```bash
-git clone https://github.com/<your-username>/RepPilot.git
+git clone https://github.com/codeXsidd/RepPilot.git
 cd RepPilot
 flutter pub get
 ```
@@ -79,7 +79,7 @@ flutter build appbundle --release
 # Output: build/app/outputs/bundle/release/app-release.aab
 ```
 
-> **Note:** Release builds are currently signed with debug keys. See [docs/SIGNING.md](docs/SIGNING.md) for production signing setup.
+> **Download:** Grab the latest APK from [GitHub Releases](https://github.com/codeXsidd/RepPilot/releases). Release builds are production-signed.
 
 ## Project Structure
 
@@ -88,7 +88,7 @@ lib/
   main.dart                  # App entry point
   app.dart                   # MaterialApp configuration
   core/
-    database/                # Database helper, migrations, schema (v7, 16 tables)
+    database/                # Database helper, migrations, schema (v8, 16 tables)
     theme/                   # Dark/light/system themes
     constants.dart           # App-wide constants
     utils.dart               # Shared utilities
