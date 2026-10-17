@@ -1,4 +1,4 @@
-const int currentSchemaVersion = 7;
+const int currentSchemaVersion = 8;
 
 const List<String> v1Tables = [
   '''
@@ -301,4 +301,16 @@ const List<String> v7Indexes = [
   'CREATE INDEX IF NOT EXISTS idx_exercises_is_favorite ON exercises(is_favorite)',
   'CREATE INDEX IF NOT EXISTS idx_exercises_last_used_at ON exercises(last_used_at)',
   'CREATE INDEX IF NOT EXISTS idx_exercises_movement_pattern ON exercises(movement_pattern)',
+];
+
+const List<String> v7ToV8Migration = [
+  'ALTER TABLE workout_sessions ADD COLUMN planned_date TEXT',
+];
+
+const List<String> v8Indexes = [
+  'CREATE UNIQUE INDEX IF NOT EXISTS idx_ws_routine_planned_date '
+      'ON workout_sessions(routine_id, planned_date) '
+      'WHERE routine_id IS NOT NULL AND planned_date IS NOT NULL',
+  'CREATE INDEX IF NOT EXISTS idx_ws_planned_date '
+      'ON workout_sessions(planned_date)',
 ];

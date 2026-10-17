@@ -60,6 +60,7 @@ class ActiveWorkoutService extends ChangeNotifier {
     required WorkoutSessionRepository sessionRepo,
     required WorkoutSetRepository setRepo,
     OverloadRecommendationRepository? recRepo,
+    String? plannedDate,
   }) async {
     _lastError = null;
     try {
@@ -67,6 +68,26 @@ class ActiveWorkoutService extends ChangeNotifier {
       if (routine == null) {
         _lastError = 'Routine not found';
         notifyListeners();
+        return;
+      }
+
+      final dateStr = plannedDate ?? formatDateOnly(DateTime.now());
+
+      final existing = await sessionRepo.getForRoutineDate(routineId, dateStr);
+      if (existing != null) {
+        final existingSets = await setRepo.getBySessionId(existing.id);
+        final order = <String>[];
+        for (final s in existingSets) {
+          if (!order.contains(s.exerciseId)) {
+            order.add(s.exerciseId);
+          }
+        }
+        _currentSession = existing;
+        _sets = existingSets;
+        _exerciseOrder = order;
+        _lastRecommendations = [];
+        notifyListeners();
+        await loadPreviousPerformance(setRepo: setRepo);
         return;
       }
 
@@ -89,6 +110,7 @@ class ActiveWorkoutService extends ChangeNotifier {
         routineId: routineId,
         routineName: routine.name,
         startedAt: now,
+        plannedDate: dateStr,
         createdAt: now,
         updatedAt: now,
       );
@@ -122,11 +144,28 @@ class ActiveWorkoutService extends ChangeNotifier {
         }
       }
 
-      await sessionRepo.createWithSets(session, newSets);
+      final created = await sessionRepo.getOrCreateForRoutine(
+        session: session,
+        sets: newSets,
+      );
 
-      _currentSession = session;
-      _sets = newSets;
-      _exerciseOrder = order;
+      if (created.id != session.id) {
+        final existingSets = await setRepo.getBySessionId(created.id);
+        final existingOrder = <String>[];
+        for (final s in existingSets) {
+          if (!existingOrder.contains(s.exerciseId)) {
+            existingOrder.add(s.exerciseId);
+          }
+        }
+        _currentSession = created;
+        _sets = existingSets;
+        _exerciseOrder = existingOrder;
+      } else {
+        _currentSession = session;
+        _sets = newSets;
+        _exerciseOrder = order;
+      }
+
       _lastRecommendations = [];
       notifyListeners();
 
@@ -447,8 +486,14 @@ class ActiveWorkoutService extends ChangeNotifier {
     try {
       final sessionId = _currentSession!.id;
       final finishedSets = List<WorkoutSet>.from(_sets);
-      final now = DateTime.now();
-      await sessionRepo.complete(sessionId, completedAt: now);
+
+      final result = await sessionRepo.completeIfActive(sessionId);
+      if (result == null) {
+        _isFinishing = false;
+        _lastError = 'Session not found';
+        notifyListeners();
+        return null;
+      }
 
       _lastRecommendations = [];
       if (overloadService != null &&
@@ -471,7 +516,6 @@ class ActiveWorkoutService extends ChangeNotifier {
         }
       }
 
-      final completed = _currentSession!.copyWith(completedAt: now);
       _currentSession = null;
       _isFinishing = false;
       _sets = [];
@@ -479,7 +523,7 @@ class ActiveWorkoutService extends ChangeNotifier {
       _previousSets = {};
       notifyListeners();
 
-      return completed;
+      return result;
     } catch (e) {
       _isFinishing = false;
       _lastError = 'Failed to finish workout: $e';

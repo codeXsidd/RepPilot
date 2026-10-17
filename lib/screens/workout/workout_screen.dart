@@ -14,6 +14,7 @@ import '../../widgets/section_header.dart';
 import '../exercises/exercise_list_screen.dart';
 import 'live_workout_screen.dart';
 import 'routine_form_screen.dart';
+import 'weekly_workouts_screen.dart';
 import 'workout_history_screen.dart';
 
 const _dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -263,6 +264,17 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       appBar: AppBar(
         title: const Text('Workouts'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.calendar_month),
+            tooltip: 'My Weekly Workouts',
+            onPressed: () async {
+              await Navigator.push<void>(
+                context,
+                MaterialPageRoute(builder: (_) => const WeeklyWorkoutsScreen()),
+              );
+              _loadData();
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.play_arrow),
             tooltip: 'Quick Start',

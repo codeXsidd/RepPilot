@@ -124,6 +124,14 @@ class DatabaseHelper {
         await db.execute(sql);
       }
     }
+    if (from < 8 && to >= 8) {
+      for (final sql in v7ToV8Migration) {
+        await db.execute(sql);
+      }
+      for (final sql in v8Indexes) {
+        await db.execute(sql);
+      }
+    }
   }
 
   static Future<void> createAllTables(Database db) async {

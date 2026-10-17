@@ -10,6 +10,7 @@ class WorkoutSession {
   final DateTime startedAt;
   final DateTime? completedAt;
   final String notes;
+  final String? plannedDate;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -20,6 +21,7 @@ class WorkoutSession {
     required this.startedAt,
     this.completedAt,
     this.notes = '',
+    this.plannedDate,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -35,6 +37,7 @@ class WorkoutSession {
     DateTime? startedAt,
     Object? completedAt = _sentinel,
     String? notes,
+    Object? plannedDate = _sentinel,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => WorkoutSession(
@@ -46,6 +49,9 @@ class WorkoutSession {
         ? this.completedAt
         : completedAt as DateTime?,
     notes: notes ?? this.notes,
+    plannedDate: plannedDate == _sentinel
+        ? this.plannedDate
+        : plannedDate as String?,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -57,6 +63,7 @@ class WorkoutSession {
     'started_at': startedAt.toIso8601String(),
     'completed_at': completedAt?.toIso8601String(),
     'notes': notes,
+    'planned_date': plannedDate,
     'created_at': createdAt.toIso8601String(),
     'updated_at': updatedAt.toIso8601String(),
   };
@@ -70,6 +77,7 @@ class WorkoutSession {
         ? DateTime.parse(map['completed_at'] as String)
         : null,
     notes: map['notes'] as String? ?? '',
+    plannedDate: map['planned_date'] as String?,
     createdAt: DateTime.parse(map['created_at'] as String),
     updatedAt: DateTime.parse(map['updated_at'] as String),
   );
@@ -84,11 +92,19 @@ class WorkoutSession {
           routineName == other.routineName &&
           startedAt == other.startedAt &&
           completedAt == other.completedAt &&
-          notes == other.notes;
+          notes == other.notes &&
+          plannedDate == other.plannedDate;
 
   @override
-  int get hashCode =>
-      Object.hash(id, routineId, routineName, startedAt, completedAt, notes);
+  int get hashCode => Object.hash(
+    id,
+    routineId,
+    routineName,
+    startedAt,
+    completedAt,
+    notes,
+    plannedDate,
+  );
 
   @override
   String toString() =>

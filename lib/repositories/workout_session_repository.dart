@@ -118,4 +118,92 @@ class WorkoutSessionRepository {
     );
     return Sqflite.firstIntValue(result) ?? 0;
   }
+
+  Future<WorkoutSession?> getForRoutineDate(
+    String routineId,
+    String plannedDate,
+  ) async {
+    final maps = await _db.query(
+      'workout_sessions',
+      where: 'routine_id = ? AND planned_date = ?',
+      whereArgs: [routineId, plannedDate],
+      limit: 1,
+    );
+    if (maps.isEmpty) return null;
+    return WorkoutSession.fromMap(maps.first);
+  }
+
+  Future<List<WorkoutSession>> getForPlannedDate(String plannedDate) async {
+    final maps = await _db.query(
+      'workout_sessions',
+      where: 'planned_date = ?',
+      whereArgs: [plannedDate],
+      orderBy: 'started_at ASC',
+    );
+    return maps.map(WorkoutSession.fromMap).toList();
+  }
+
+  Future<WorkoutSession> getOrCreateForRoutine({
+    required WorkoutSession session,
+    required List<WorkoutSet> sets,
+  }) async {
+    return await _db.transaction((txn) async {
+      final existing = await txn.query(
+        'workout_sessions',
+        where: 'routine_id = ? AND planned_date = ?',
+        whereArgs: [session.routineId, session.plannedDate],
+        limit: 1,
+      );
+      if (existing.isNotEmpty) {
+        return WorkoutSession.fromMap(existing.first);
+      }
+      await txn.insert('workout_sessions', session.toMap());
+      for (final s in sets) {
+        await txn.insert('workout_sets', s.toMap());
+      }
+      return session;
+    });
+  }
+
+  Future<WorkoutSession?> completeIfActive(String id) async {
+    return await _db.transaction((txn) async {
+      final rows = await txn.query(
+        'workout_sessions',
+        where: 'id = ? AND completed_at IS NULL',
+        whereArgs: [id],
+      );
+      if (rows.isEmpty) {
+        final completed = await txn.query(
+          'workout_sessions',
+          where: 'id = ?',
+          whereArgs: [id],
+        );
+        return completed.isNotEmpty
+            ? WorkoutSession.fromMap(completed.first)
+            : null;
+      }
+      final now = DateTime.now();
+      await txn.update(
+        'workout_sessions',
+        {
+          'completed_at': now.toIso8601String(),
+          'updated_at': now.toIso8601String(),
+        },
+        where: 'id = ? AND completed_at IS NULL',
+        whereArgs: [id],
+      );
+      return WorkoutSession.fromMap(rows.first)
+          .copyWith(completedAt: now, updatedAt: now);
+    });
+  }
+
+  Future<int> uncomplete(String id) async {
+    final now = DateTime.now();
+    return _db.update(
+      'workout_sessions',
+      {'completed_at': null, 'updated_at': now.toIso8601String()},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

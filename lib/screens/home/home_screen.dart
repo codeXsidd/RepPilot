@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/constants.dart';
 import '../../models/body_weight_entry.dart';
+import '../../models/routine.dart';
+import '../../models/workout_session.dart';
 import '../../repositories/body_weight_repository.dart';
 import '../../repositories/food_entry_repository.dart';
+import '../../repositories/routine_repository.dart';
 import '../../repositories/water_entry_repository.dart';
 import '../../repositories/workout_session_repository.dart';
 import '../../repositories/workout_set_repository.dart';
-import '../../core/constants.dart';
 import '../../services/active_workout_service.dart';
 import '../../services/motivation_service.dart';
 import '../../services/streak_service.dart';
 import '../../widgets/section_header.dart';
 import '../workout/live_workout_screen.dart';
+import '../workout/weekly_workouts_screen.dart';
+import '../workout/workout_day_detail_screen.dart';
 import 'weekly_report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,6 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _hasActiveSession = false;
   int _currentStreak = 0;
   int _totalWorkouts = 0;
+  Routine? _todayRoutine;
+  WorkoutSession? _todaySession;
 
   @override
   void initState() {
@@ -47,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final bodyWeight = context.read<BodyWeightRepository>();
       final food = context.read<FoodEntryRepository>();
       final streakService = context.read<StreakService>();
+      final routineRepo = context.read<RoutineRepository>();
 
       final now = DateTime.now();
       final today = stripTime(now);
@@ -65,6 +73,21 @@ class _HomeScreenState extends State<HomeScreen> {
       final streak = streakService.getCurrentStreak(allSessions, now);
       final total = streakService.getTotalWorkouts(allSessions);
 
+      final todayDow = now.weekday;
+      final todayRoutines = await routineRepo.getByDayOfWeek(todayDow);
+      final todayRoutine = todayRoutines.isNotEmpty
+          ? todayRoutines.first
+          : null;
+
+      WorkoutSession? todaySession;
+      if (todayRoutine != null) {
+        final dateStr = formatDateOnly(now);
+        todaySession = await sessions.getForRoutineDate(
+          todayRoutine.id,
+          dateStr,
+        );
+      }
+
       if (!mounted) return;
       setState(() {
         _completedSessions = weekSessions;
@@ -75,6 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _hasActiveSession = active != null;
         _currentStreak = streak;
         _totalWorkouts = total;
+        _todayRoutine = todayRoutine;
+        _todaySession = todaySession;
         _loading = false;
       });
     } catch (e) {
@@ -199,6 +224,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 16),
                   ],
+                  _TodaysWorkoutCard(
+                    routine: _todayRoutine,
+                    session: _todaySession,
+                    onTap: _todayRoutine != null
+                        ? () async {
+                            await Navigator.push<void>(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => WorkoutDayDetailScreen(
+                                  routine: _todayRoutine!,
+                                  date: stripTime(DateTime.now()),
+                                ),
+                              ),
+                            );
+                            _loadDashboard();
+                          }
+                        : null,
+                    onViewAll: () async {
+                      await Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const WeeklyWorkoutsScreen(),
+                        ),
+                      );
+                      _loadDashboard();
+                    },
+                  ),
+                  const SizedBox(height: 16),
                   Text(
                     today,
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -425,6 +478,126 @@ class _QuickStatRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _TodaysWorkoutCard extends StatelessWidget {
+  final Routine? routine;
+  final WorkoutSession? session;
+  final VoidCallback? onTap;
+  final VoidCallback onViewAll;
+
+  const _TodaysWorkoutCard({
+    required this.routine,
+    required this.session,
+    required this.onTap,
+    required this.onViewAll,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    if (routine == null) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(
+                Icons.hotel,
+                color: theme.colorScheme.outlineVariant,
+                size: 28,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rest Day',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'No workout scheduled for today.',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              TextButton(onPressed: onViewAll, child: const Text('Week')),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final isCompleted = session != null && !session!.isActive;
+    final isInProgress = session != null && session!.isActive;
+
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(
+                isCompleted
+                    ? Icons.check_circle
+                    : isInProgress
+                    ? Icons.play_circle_fill
+                    : Icons.fitness_center,
+                color: isCompleted
+                    ? Colors.green[700]
+                    : isInProgress
+                    ? Colors.orange[700]
+                    : theme.colorScheme.primary,
+                size: 28,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      routine!.name,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      isCompleted
+                          ? 'Completed'
+                          : isInProgress
+                          ? 'In Progress — tap to resume'
+                          : 'Tap to view workout plan',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: isCompleted
+                            ? Colors.green[700]
+                            : isInProgress
+                            ? Colors.orange[700]
+                            : theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              TextButton(onPressed: onViewAll, child: const Text('Week')),
+              Icon(
+                Icons.chevron_right,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

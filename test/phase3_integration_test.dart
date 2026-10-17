@@ -244,6 +244,7 @@ void main() {
         exerciseRepo: exerciseRepo,
         sessionRepo: sessionRepo,
         setRepo: setRepo,
+        plannedDate: '2025-07-01',
       );
       await service.finishWorkout(sessionRepo: sessionRepo);
 
@@ -254,6 +255,7 @@ void main() {
         exerciseRepo: exerciseRepo,
         sessionRepo: sessionRepo,
         setRepo: setRepo,
+        plannedDate: '2025-07-02',
       );
       await service.finishWorkout(sessionRepo: sessionRepo);
 

@@ -11,7 +11,7 @@ void main() {
   });
 
   test('schema version matches currentSchemaVersion', () {
-    expect(currentSchemaVersion, 7);
+    expect(currentSchemaVersion, 8);
   });
 
   test('onCreate creates all tables', () async {
@@ -94,6 +94,8 @@ void main() {
         'idx_foods_name',
         'idx_foods_category',
         'idx_meal_template_items_template_id',
+        'idx_ws_routine_planned_date',
+        'idx_ws_planned_date',
       ]),
     );
 
@@ -141,6 +143,23 @@ void main() {
     final reColNames = reCols.map((r) => r['name'] as String).toSet();
     expect(reColNames, contains('target_reps_min'));
     expect(reColNames, contains('target_reps_max'));
+
+    await db.close();
+  });
+
+  test('v8 adds planned_date column to workout_sessions', () async {
+    final db = await databaseFactory.openDatabase(
+      inMemoryDatabasePath,
+      options: OpenDatabaseOptions(
+        version: currentSchemaVersion,
+        onConfigure: DatabaseHelper.onConfigure,
+        onCreate: DatabaseHelper.onCreate,
+      ),
+    );
+
+    final cols = await db.rawQuery('PRAGMA table_info(workout_sessions)');
+    final colNames = cols.map((r) => r['name'] as String).toSet();
+    expect(colNames, contains('planned_date'));
 
     await db.close();
   });

@@ -203,6 +203,7 @@ void main() {
         exerciseRepo: exerciseRepo,
         sessionRepo: sessionRepo,
         setRepo: setRepo,
+        plannedDate: '2025-07-01',
       );
 
       for (final s in workoutService.sets) {
@@ -235,6 +236,7 @@ void main() {
         sessionRepo: sessionRepo,
         setRepo: setRepo,
         recRepo: recRepo,
+        plannedDate: '2025-07-02',
       );
 
       final benchSets = workoutService.setsForExercise('ex-bench');
@@ -312,6 +314,7 @@ void main() {
         exerciseRepo: exerciseRepo,
         sessionRepo: sessionRepo,
         setRepo: setRepo,
+        plannedDate: '2025-07-01',
       );
 
       for (final s in workoutService.sets) {
@@ -345,6 +348,7 @@ void main() {
         sessionRepo: sessionRepo,
         setRepo: setRepo,
         recRepo: recRepo,
+        plannedDate: '2025-07-02',
       );
 
       final benchSets = workoutService.setsForExercise('ex-bench');
