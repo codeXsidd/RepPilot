@@ -20,6 +20,7 @@ dependencies:
   fl_chart: ^0.70.2
   file_picker: ^13.0.0
   flutter_svg: ^2.0.17
+  wakelock_plus: ^1.8.1
 
 dev_dependencies:
   flutter_test:

@@ -19,6 +19,7 @@ import 'package:rep_pilot/widgets/section_header.dart';
 import '../weight/body_measurement_screen.dart';
 import '../weight/weight_chart.dart';
 import '../weight/weight_screen.dart';
+import 'muscle_distribution_screen.dart';
 import 'workout_calendar_screen.dart';
 
 class ProgressDashboard extends StatefulWidget {
@@ -128,6 +129,16 @@ class _ProgressDashboardState extends State<ProgressDashboard>
         title: const Text('Progress'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.pie_chart_outline_rounded),
+            tooltip: 'Muscle Distribution',
+            onPressed: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const MuscleDistributionScreen(),
+              ),
+            ),
+          ),
+          IconButton(
             icon: const Icon(Icons.calendar_month_rounded),
             tooltip: 'Workout Calendar',
             onPressed: () => Navigator.push<void>(
@@ -157,6 +168,7 @@ class _ProgressDashboardState extends State<ProgressDashboard>
                   weightUnit: _weightUnit,
                   analytics: _analytics,
                   onOpenWeightScreen: _openWeightScreen,
+                  onRefresh: _loadAll,
                 ),
                 _MeasurementsTab(
                   measurements: _measurements,
@@ -195,12 +207,14 @@ class _WeightTab extends StatelessWidget {
   final String weightUnit;
   final WeightAnalyticsService analytics;
   final VoidCallback onOpenWeightScreen;
+  final Future<void> Function() onRefresh;
 
   const _WeightTab({
     required this.entries,
     required this.weightUnit,
     required this.analytics,
     required this.onOpenWeightScreen,
+    required this.onRefresh,
   });
 
   @override
@@ -236,7 +250,7 @@ class _WeightTab extends StatelessWidget {
     final change = analytics.getWeightChange(entries);
 
     return RefreshIndicator(
-      onRefresh: () async {},
+      onRefresh: onRefresh,
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'package:rep_pilot/repositories/exercise_repository.dart';
 import 'package:rep_pilot/repositories/exercise_settings_repository.dart';
@@ -12,7 +13,6 @@ import 'package:rep_pilot/repositories/workout_session_repository.dart';
 import 'package:rep_pilot/repositories/workout_set_repository.dart';
 import 'package:rep_pilot/services/active_workout_service.dart';
 import 'package:rep_pilot/services/overload_service.dart';
-import 'package:rep_pilot/services/rest_timer_service.dart';
 import 'package:rep_pilot/models/workout_set.dart';
 import 'package:rep_pilot/screens/workout/session_summary_screen.dart';
 import 'package:rep_pilot/screens/exercises/exercise_picker_screen.dart';
@@ -35,6 +35,7 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
   @override
   void initState() {
     super.initState();
+    WakelockPlus.enable();
     _durationTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) setState(() {});
     });
@@ -78,6 +79,7 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
   @override
   void dispose() {
     _durationTimer?.cancel();
+    WakelockPlus.disable();
     super.dispose();
   }
 
@@ -225,7 +227,6 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
   @override
   Widget build(BuildContext context) {
     final service = context.watch<ActiveWorkoutService>();
-    final restTimer = context.watch<RestTimerService>();
     final session = service.currentSession;
 
     if (session == null) {
@@ -381,7 +382,6 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
                     exerciseName: name,
                     previousLabel: prevLabel,
                     sets: exerciseSets,
-                    restTimer: restTimer,
                     onAddSet: () {
                       service.addSet(
                         exerciseId: exerciseId,
@@ -396,7 +396,6 @@ class _LiveWorkoutScreenState extends State<LiveWorkoutScreen> {
           totalSets: service.totalSetCount,
           progress: service.progressPercent,
           isFinishing: service.isFinishing,
-          restTimer: restTimer,
           onFinish: _finishWorkout,
         ),
       ),
@@ -409,7 +408,6 @@ class _ExerciseSection extends StatelessWidget {
   final String exerciseName;
   final String previousLabel;
   final List<WorkoutSet> sets;
-  final RestTimerService restTimer;
   final VoidCallback onAddSet;
 
   const _ExerciseSection({
@@ -417,7 +415,6 @@ class _ExerciseSection extends StatelessWidget {
     required this.exerciseName,
     required this.previousLabel,
     required this.sets,
-    required this.restTimer,
     required this.onAddSet,
   });
 
@@ -596,10 +593,6 @@ class _SetRowState extends State<_SetRow> {
         return;
       }
       service.completeSet(setId: widget.set.id, setRepo: setRepo);
-      final restTimer = context.read<RestTimerService>();
-      if (!restTimer.isRunning) {
-        restTimer.start(60);
-      }
     } else {
       service.uncompleteSet(setId: widget.set.id, setRepo: setRepo);
     }
@@ -875,7 +868,6 @@ class _BottomBar extends StatelessWidget {
   final int totalSets;
   final double progress;
   final bool isFinishing;
-  final RestTimerService restTimer;
   final VoidCallback onFinish;
 
   const _BottomBar({
@@ -883,7 +875,6 @@ class _BottomBar extends StatelessWidget {
     required this.totalSets,
     required this.progress,
     required this.isFinishing,
-    required this.restTimer,
     required this.onFinish,
   });
 
@@ -909,10 +900,6 @@ class _BottomBar extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (restTimer.isRunning || restTimer.isComplete) ...[
-                _RestTimerBar(restTimer: restTimer),
-                const SizedBox(height: 10),
-              ],
               Row(
                 children: [
                   Expanded(
@@ -960,78 +947,6 @@ class _BottomBar extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _RestTimerBar extends StatelessWidget {
-  final RestTimerService restTimer;
-  const _RestTimerBar({required this.restTimer});
-
-  String _formatTimer(int seconds) {
-    final m = seconds ~/ 60;
-    final s = seconds % 60;
-    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isComplete = restTimer.isComplete;
-    final isDark = theme.brightness == Brightness.dark;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: isComplete
-            ? AppColors.success.withValues(alpha: isDark ? 0.15 : 0.1)
-            : theme.colorScheme.primary.withValues(alpha: isDark ? 0.12 : 0.08),
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            isComplete ? Icons.check_circle_rounded : Icons.timer_rounded,
-            size: 20,
-            color: isComplete ? AppColors.success : theme.colorScheme.primary,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              isComplete
-                  ? 'Rest complete!'
-                  : 'Rest: ${_formatTimer(restTimer.remainingSeconds)}',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: isComplete
-                    ? AppColors.success
-                    : theme.colorScheme.primary,
-                fontFeatures: [const FontFeature.tabularFigures()],
-              ),
-            ),
-          ),
-          if (!isComplete && restTimer.isRunning)
-            IconButton(
-              icon: Icon(
-                restTimer.isPaused
-                    ? Icons.play_arrow_rounded
-                    : Icons.pause_rounded,
-                size: 20,
-              ),
-              onPressed: restTimer.isPaused
-                  ? restTimer.resume
-                  : restTimer.pause,
-              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-              padding: EdgeInsets.zero,
-            ),
-          IconButton(
-            icon: const Icon(Icons.close_rounded, size: 20),
-            onPressed: restTimer.reset,
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            padding: EdgeInsets.zero,
-          ),
-        ],
       ),
     );
   }

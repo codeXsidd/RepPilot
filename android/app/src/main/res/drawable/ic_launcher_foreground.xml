@@ -3,20 +3,20 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Dumbbell bar (horizontal) -->
-    <path
-        android:fillColor="#4CAF50"
-        android:pathData="M30,50 L78,50 L78,58 L30,58 Z" />
     <!-- Left weight plate -->
     <path
-        android:fillColor="#4CAF50"
-        android:pathData="M24,38 L34,38 L34,70 L24,70 Z" />
+        android:fillColor="#00E676"
+        android:pathData="M20,30 L36,30 L36,78 L20,78 Z" />
     <!-- Right weight plate -->
     <path
-        android:fillColor="#4CAF50"
-        android:pathData="M74,38 L84,38 L84,70 L74,70 Z" />
-    <!-- Upward arrow (progress indicator) -->
+        android:fillColor="#00E676"
+        android:pathData="M72,30 L88,30 L88,78 L72,78 Z" />
+    <!-- Horizontal bar -->
+    <path
+        android:fillColor="#00E676"
+        android:pathData="M36,47 L72,47 L72,61 L36,61 Z" />
+    <!-- Upward arrow -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M54,28 L62,40 L57,40 L57,48 L51,48 L51,40 L46,40 Z" />
+        android:pathData="M54,22 L66,38 L58,38 L58,47 L50,47 L50,38 L42,38 Z" />
 </vector>

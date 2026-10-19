@@ -393,6 +393,7 @@ class _RoutineFormScreenState extends State<RoutineFormScreen> {
                         return _ExerciseTile(
                           key: ValueKey('${entry.exercise.id}-$index'),
                           entry: entry,
+                          index: index,
                           onTap: () => _editExerciseDetails(index),
                           onDismissed: () => _removeExercise(index),
                         );
@@ -439,12 +440,14 @@ class _SectionLabel extends StatelessWidget {
 
 class _ExerciseTile extends StatelessWidget {
   final _RoutineExerciseEntry entry;
+  final int index;
   final VoidCallback onTap;
   final VoidCallback onDismissed;
 
   const _ExerciseTile({
     super.key,
     required this.entry,
+    required this.index,
     required this.onTap,
     required this.onDismissed,
   });
@@ -500,7 +503,7 @@ class _ExerciseTile extends StatelessWidget {
             ),
           ),
           trailing: ReorderableDragStartListener(
-            index: 0,
+            index: index,
             child: const Icon(Icons.drag_handle_rounded),
           ),
           onTap: onTap,

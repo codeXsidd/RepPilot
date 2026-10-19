@@ -25,7 +25,6 @@ import 'services/backup_service.dart';
 import 'services/motivation_service.dart';
 import 'services/overload_service.dart';
 import 'services/reminder_service.dart';
-import 'services/rest_timer_service.dart';
 import 'services/training_level_service.dart';
 import 'services/streak_service.dart';
 import 'services/weekly_report_service.dart';
@@ -56,7 +55,6 @@ class RepPilotApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: themeController),
         ChangeNotifierProvider.value(value: trainingLevelService),
         ChangeNotifierProvider(create: (_) => ActiveWorkoutService()),
-        ChangeNotifierProvider(create: (_) => RestTimerService()),
         Provider(create: (_) => UserProfileRepository(database)),
         Provider(create: (_) => ExerciseRepository(database)),
         Provider(create: (_) => RoutineRepository(database)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -132,6 +133,42 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
     });
   }
 
+  void _copySummary(
+    List<WorkoutSet> completedSets,
+    Duration duration,
+    double totalVolume,
+    Map<String, List<WorkoutSet>> exerciseGroups,
+  ) {
+    final buf = StringBuffer();
+    final name = widget.session.routineName.isNotEmpty
+        ? widget.session.routineName
+        : 'Workout';
+    buf.writeln(
+      '$name - ${DateFormat.yMMMd().format(widget.session.startedAt)}',
+    );
+    buf.writeln(
+      'Duration: ${_formatDuration(duration)} | '
+      'Sets: ${completedSets.length} | '
+      'Volume: ${totalVolume.toStringAsFixed(0)} kg',
+    );
+    buf.writeln();
+    for (final entry in exerciseGroups.entries) {
+      final exName = entry.value.first.exerciseName;
+      buf.writeln(exName);
+      for (final s in entry.value) {
+        final w = s.weightKg?.toStringAsFixed(1) ?? '-';
+        buf.writeln('  Set ${s.setNumber}: ${s.reps ?? 0} × $w kg');
+      }
+    }
+    buf.writeln();
+    buf.writeln('Logged with RepPilot');
+    Clipboard.setData(ClipboardData(text: buf.toString()));
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Workout summary copied to clipboard')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -153,7 +190,21 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Workout Complete')),
+      appBar: AppBar(
+        title: const Text('Workout Complete'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.copy_rounded),
+            tooltip: 'Copy summary',
+            onPressed: () => _copySummary(
+              completedSets,
+              duration,
+              totalVolume,
+              exerciseGroups,
+            ),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

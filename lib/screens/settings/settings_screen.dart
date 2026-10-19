@@ -6,6 +6,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/theme_controller.dart';
 import '../../widgets/section_header.dart';
 import 'backup_restore_screen.dart';
+import 'plate_calculator_screen.dart';
 import 'reminder_settings_screen.dart';
 import 'units_settings_screen.dart';
 
@@ -111,6 +112,30 @@ class SettingsScreen extends StatelessWidget {
                     ],
                   ),
               ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          const SectionHeader(title: 'WORKOUT TOOLS'),
+          Card(
+            child: ListTile(
+              leading: Icon(
+                Icons.calculate_outlined,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              title: const Text('Plate Calculator'),
+              subtitle: const Text(
+                'Calculate plates needed for a target weight',
+              ),
+              trailing: Icon(
+                Icons.chevron_right_rounded,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              onTap: () => Navigator.push<void>(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const PlateCalculatorScreen(),
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 24),

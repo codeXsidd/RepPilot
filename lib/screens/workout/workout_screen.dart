@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/constants.dart';
 import '../../models/routine.dart';
+import '../../models/workout_session.dart';
 import '../../repositories/exercise_repository.dart';
 import '../../repositories/overload_recommendation_repository.dart';
 import '../../repositories/routine_exercise_repository.dart';
@@ -15,6 +17,7 @@ import '../../widgets/section_header.dart';
 import '../exercises/exercise_list_screen.dart';
 import 'live_workout_screen.dart';
 import 'routine_form_screen.dart';
+import 'session_summary_screen.dart';
 import 'weekly_workouts_screen.dart';
 import 'workout_history_screen.dart';
 
@@ -31,6 +34,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   List<Routine> _routines = [];
   Map<int, List<Routine>> _schedule = {};
   Map<String, int> _exerciseCounts = {};
+  Map<String, WorkoutSession?> _todaySessions = {};
   bool _loading = true;
 
   @override
@@ -42,13 +46,19 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   Future<void> _loadData() async {
     final routineRepo = context.read<RoutineRepository>();
     final reRepo = context.read<RoutineExerciseRepository>();
+    final sessionRepo = context.read<WorkoutSessionRepository>();
 
     final routines = await routineRepo.getAll();
     final schedule = await routineRepo.getWeeklySchedule();
     final counts = <String, int>{};
+    final todayStr = formatDateOnly(DateTime.now());
+    final sessions = <String, WorkoutSession?>{};
+
     for (final r in routines) {
       final exercises = await reRepo.getByRoutineId(r.id);
       counts[r.id] = exercises.length;
+      final session = await sessionRepo.getForRoutineDate(r.id, todayStr);
+      sessions[r.id] = session;
     }
 
     if (!mounted) return;
@@ -56,6 +66,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       _routines = routines;
       _schedule = schedule;
       _exerciseCounts = counts;
+      _todaySessions = sessions;
       _loading = false;
     });
   }
@@ -191,6 +202,57 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     if (confirmed != true || !mounted) return;
 
     await repo.delete(routine.id);
+    _loadData();
+  }
+
+  Future<void> _undoCompletion(Routine routine) async {
+    final session = _todaySessions[routine.id];
+    if (session == null || session.isActive) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Undo Completion?'),
+        content: const Text(
+          'This will mark the workout as incomplete for today. '
+          'Your logged sets will be preserved.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Undo'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final sessionRepo = context.read<WorkoutSessionRepository>();
+    await sessionRepo.uncomplete(session.id);
+    _loadData();
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Workout marked as incomplete')),
+    );
+  }
+
+  Future<void> _viewSummary(Routine routine) async {
+    final session = _todaySessions[routine.id];
+    if (session == null) return;
+    final setRepo = context.read<WorkoutSetRepository>();
+    final sets = await setRepo.getBySessionId(session.id);
+    if (!mounted) return;
+    await Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SessionSummaryScreen(session: session, sets: sets),
+      ),
+    );
     _loadData();
   }
 
@@ -336,18 +398,25 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                           'Add exercises, set your rep targets, and plan your week.',
                     )
                   else
-                    ..._routines.map(
-                      (r) => _RoutineCard(
+                    ..._routines.map((r) {
+                      final session = _todaySessions[r.id];
+                      final isCompleted = session != null && !session.isActive;
+                      final isInProgress = session != null && session.isActive;
+                      return _RoutineCard(
                         routine: r,
                         exerciseCount: _exerciseCounts[r.id] ?? 0,
+                        isCompleted: isCompleted,
+                        isInProgress: isInProgress,
                         onTap: () => _navigateToForm(routine: r),
                         onStart: () => _startWorkout(r),
                         onEdit: () => _navigateToForm(routine: r),
                         onDuplicate: () => _duplicateRoutine(r),
                         onArchive: () => _archiveRoutine(r),
                         onDelete: () => _deleteRoutine(r),
-                      ),
-                    ),
+                        onUndoCompletion: () => _undoCompletion(r),
+                        onViewSummary: () => _viewSummary(r),
+                      );
+                    }),
                 ],
               ),
             ),
@@ -467,22 +536,30 @@ class _DayCard extends StatelessWidget {
 class _RoutineCard extends StatelessWidget {
   final Routine routine;
   final int exerciseCount;
+  final bool isCompleted;
+  final bool isInProgress;
   final VoidCallback onTap;
   final VoidCallback onStart;
   final VoidCallback onEdit;
   final VoidCallback onDuplicate;
   final VoidCallback onArchive;
   final VoidCallback onDelete;
+  final VoidCallback onUndoCompletion;
+  final VoidCallback onViewSummary;
 
   const _RoutineCard({
     required this.routine,
     required this.exerciseCount,
+    this.isCompleted = false,
+    this.isInProgress = false,
     required this.onTap,
     required this.onStart,
     required this.onEdit,
     required this.onDuplicate,
     required this.onArchive,
     required this.onDelete,
+    required this.onUndoCompletion,
+    required this.onViewSummary,
   });
 
   String? get _dayLabel {
@@ -494,6 +571,7 @@ class _RoutineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final cs = theme.colorScheme;
     final dayLabel = _dayLabel;
 
     return Padding(
@@ -523,13 +601,13 @@ class _RoutineCard extends StatelessWidget {
                             Icon(
                               Icons.calendar_today_rounded,
                               size: 13,
-                              color: theme.colorScheme.primary,
+                              color: cs.primary,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               dayLabel,
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.primary,
+                                color: cs.primary,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -538,13 +616,13 @@ class _RoutineCard extends StatelessWidget {
                           Icon(
                             Icons.fitness_center_rounded,
                             size: 13,
-                            color: theme.colorScheme.onSurfaceVariant,
+                            color: cs.onSurfaceVariant,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             '$exerciseCount exercise${exerciseCount == 1 ? '' : 's'}',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                              color: cs.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -552,7 +630,43 @@ class _RoutineCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (exerciseCount > 0) ...[
+                if (isCompleted) ...[
+                  SizedBox(
+                    height: 34,
+                    child: FilledButton.icon(
+                      onPressed: onViewSummary,
+                      icon: const Icon(Icons.check_circle_rounded, size: 16),
+                      label: const Text('Completed'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.success,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        minimumSize: Size.zero,
+                        textStyle: theme.textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                ] else if (isInProgress) ...[
+                  SizedBox(
+                    height: 34,
+                    child: FilledButton.icon(
+                      onPressed: onStart,
+                      icon: const Icon(Icons.play_arrow_rounded, size: 16),
+                      label: const Text('Resume'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.warning,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        minimumSize: Size.zero,
+                        textStyle: theme.textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                ] else if (exerciseCount > 0) ...[
                   SizedBox(
                     height: 34,
                     child: FilledButton(
@@ -580,14 +694,35 @@ class _RoutineCard extends StatelessWidget {
                         onArchive();
                       case 'delete':
                         onDelete();
+                      case 'undo':
+                        onUndoCompletion();
+                      case 'summary':
+                        onViewSummary();
                     }
                   },
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(value: 'edit', child: Text('Edit')),
-                    PopupMenuItem(value: 'duplicate', child: Text('Duplicate')),
-                    PopupMenuItem(value: 'archive', child: Text('Archive')),
-                    PopupMenuDivider(),
-                    PopupMenuItem(value: 'delete', child: Text('Delete')),
+                  itemBuilder: (_) => [
+                    if (isCompleted) ...[
+                      const PopupMenuItem(
+                        value: 'summary',
+                        child: Text('View Summary'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'undo',
+                        child: Text('Undo Completion'),
+                      ),
+                      const PopupMenuDivider(),
+                    ],
+                    const PopupMenuItem(value: 'edit', child: Text('Edit')),
+                    const PopupMenuItem(
+                      value: 'duplicate',
+                      child: Text('Duplicate'),
+                    ),
+                    const PopupMenuItem(
+                      value: 'archive',
+                      child: Text('Archive'),
+                    ),
+                    const PopupMenuDivider(),
+                    const PopupMenuItem(value: 'delete', child: Text('Delete')),
                   ],
                 ),
               ],

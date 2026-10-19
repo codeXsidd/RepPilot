@@ -31,9 +31,9 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
     final setRepo = context.read<WorkoutSetRepository>();
 
     final sessions = await sessionRepo.getAll();
-    final completedSessions = sessions
-        .where((s) => s.completedAt != null)
-        .toList();
+    final completedSessions =
+        sessions.where((s) => s.completedAt != null).toList()
+          ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
 
     final counts = <String, int>{};
     for (final s in completedSessions) {
